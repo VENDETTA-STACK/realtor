@@ -47,7 +47,7 @@ import AboutUs from "layouts/pages/landing-pages/about-us";
 import ContactUs from "layouts/pages/landing-pages/contact-us";
 import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
-import AdminPage from "layouts/pages/authentication/admin";
+import Admin from "layouts/pages/authentication/admin";
 
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -107,7 +107,7 @@ const routes = [
           {
             name: "admin",
             route: "/pages/authentication/admin",
-            component: <AdminPage />,
+            component: <Admin />,
           }
         ],
       },

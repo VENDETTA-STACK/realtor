@@ -22,13 +22,11 @@ import Grid from "@mui/material/Grid";
 import MKBox from "components/MKBox";
 import MKInput from "components/MKInput";
 
-function InputOutlined() {
+function InputOutlined(prop) {
   return (
-    <MKBox component="section" py={12}>
+    <MKBox component="section" py={1}>
       <Container>
-        <Grid container item xs={12} lg={4} py={1} mx="auto">
-          <MKInput label="Outline" fullWidth />
-        </Grid>
+          <MKInput label={prop.label} fullWidth  type={prop.type} multiline={prop.multiline} rows={prop.rows}/>
       </Container>
     </MKBox>
   );

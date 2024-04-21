@@ -1,0 +1,22 @@
+.admin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .admin-form {
+    max-width: 400px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .admin-form > div {
+    margin-bottom: 10px;
+  }
+  
+  .admin-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
