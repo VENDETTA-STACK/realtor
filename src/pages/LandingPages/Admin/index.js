@@ -6,8 +6,11 @@ import Icon from "@mui/material/Icon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MKButton from "components/MKButton";
+import "@fontsource/playfair-display";
 
 const Admin = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const [dropdown, setDropdown] = useState(null);
   const [propertyType, setPropertyType] = useState("");
   const [listingType, setListingType] = useState("");
@@ -20,12 +23,19 @@ const Admin = () => {
   const [price, setPrice] = useState("");
   const [selectedPropertyType, setSelectedPropertyType] = useState("Select Property Type");
 
-  const openDropdown = ({ currentTarget }) => setDropdown(currentTarget);
-  const closeDropdown = (value) => {
-    setDropdown(null);
-    console.log(value);
-    setPropertyType(value); // Set the property value here
-  }
+  const openDropdown = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const closeDropdown = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSelect = (type) => {
+    setPropertyType(type);
+    setSelectedPropertyType(type);
+    closeDropdown();
+  };
 
   const handlePropertyTypeChange = (e) => {
     setPropertyType(e.target.value);
@@ -40,6 +50,8 @@ const Admin = () => {
     }
   };
 
+  const HouseTypes = ["House", "Condo", "Townhouse", "Apartment", "Commercial"];
+
   const [listingTypeDropdown, setListingTypeDropdown] = useState(null);
 
   const openListingTypeDropdown = ({ currentTarget }) => setListingTypeDropdown(currentTarget);
@@ -48,6 +60,28 @@ const Admin = () => {
   const handleListingTypeSelection = (value) => {
     setListingType(value);
     closeListingTypeDropdown(); // Close the dropdown after selection
+  };
+
+  const onSelectImagesClicked = () => {
+  const inputElement = document.createElement('input');
+  inputElement.type = 'file';
+  inputElement.accept = 'image/*';
+  inputElement.multiple = true;
+  inputElement.click();
+
+  inputElement.addEventListener('change', handleFileSelect);
+  };
+
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    const maxFiles = 10;
+    const selectedFiles = [];
+  
+    for (let i = 0; i < Math.min(files.length, maxFiles); i++) {
+      selectedFiles.push(files[i]);
+    }
+    document.getElementById('select-image').innerHTML = `${selectedFiles.length} images selected`;
+    console.log("Selected Images:", selectedFiles);
   };
 
   useEffect(() => {
@@ -61,17 +95,28 @@ const Admin = () => {
 
         <Grid container item xs={12} justifyContent="center">
           {/* Wrap the Grid component in a container Grid */}
-          <MKButton variant="gradient" color="info" onClick={openDropdown}>
-            {selectedPropertyType} <Icon>expand_more</Icon>
+          <MKButton variant="gradient" color="info" onClick={openDropdown} className="equal-width-button">
+            {selectedPropertyType || "Select Property Type"} <Icon>expand_more</Icon>
           </MKButton>
-          <Menu anchorEl={dropdown} open={Boolean(dropdown)} onClose={closeDropdown}>
-            {!propertyType && <MenuItem onClick={closeDropdown}>Select Property Type</MenuItem>}
-            <MenuItem onClick={() => closeDropdown("House")}>House</MenuItem>
-            <MenuItem onClick={() => closeDropdown("Condo")}>Condo</MenuItem>
-            <MenuItem onClick={() => closeDropdown("Townhouse")}>Townhouse</MenuItem>
-            <MenuItem onClick={() => closeDropdown("Apartment")}>Apartment</MenuItem>
-            <MenuItem onClick={() => closeDropdown("Commercial")}>Commercial</MenuItem>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeDropdown}>
+            {!selectedPropertyType && <MenuItem onClick={closeDropdown}>Select Property Type</MenuItem>}
+            {HouseTypes.map((type, index) => (
+              type === "Commercial" && selectedPropertyType === "Commercial" ? null : (
+                <MenuItem key={index} onClick={() => handleSelect(type)}>{type}</MenuItem>
+              )
+            ))}
           </Menu>
+
+          <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
+            {listingType || "Select Listing Type"} <Icon>expand_more</Icon>
+          </MKButton>
+          <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
+            <MenuItem onClick={() => handleListingTypeSelection("For Sale")}>For Sale</MenuItem>
+            <MenuItem onClick={() => handleListingTypeSelection("For Rent")}>For Rent</MenuItem>
+          </Menu>
+          <MKButton id="select-image" variant="gradient" color="info" onClick={onSelectImagesClicked} className="equal-width-button">
+            Select Images
+          </MKButton>
         </Grid>
 
         {propertyType === "Commercial" ? (
@@ -82,18 +127,17 @@ const Admin = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
+             <InputOutlined
+              id="description"
+              label="Description"
+              multiline
+              rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
         ) : (
           <div>
-            <Grid container item xs={12} justifyContent="center">
-              <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown}>
-                {listingType || "Select Listing Type"} <Icon>expand_more</Icon>
-              </MKButton>
-              <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
-                <MenuItem onClick={() => handleListingTypeSelection("For Sale")}>For Sale</MenuItem>
-                <MenuItem onClick={() => handleListingTypeSelection("For Rent")}>For Rent</MenuItem>
-              </Menu>
-            </Grid>
             <InputOutlined
               id="bathrooms"
               label="Bathrooms"
@@ -137,8 +181,14 @@ const Admin = () => {
             />
           </div>
         )}
-              <MKButton variant="gradient" color="info" onClick={() => console.log("Submit")}> Submit </MKButton> 
-
+           <MKButton 
+  variant="gradient" 
+  color="info" 
+  onClick={() => console.log("Submit")}
+  style={{ display: 'block', margin: '10px auto' }}  // Add these styles inline
+>
+  Submit
+</MKButton>
       </div>
     </div>
   );
