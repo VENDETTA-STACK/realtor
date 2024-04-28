@@ -17,6 +17,7 @@ Coded by www.creative-tim.com
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import Icon from "@mui/material/Icon";
 import Stack from "@mui/material/Stack";
 
 // Material Kit 2 React components
@@ -25,12 +26,12 @@ import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 
 // Images
-import bgImage from "assets/images/bg-coworking.jpeg";
+// import bgImage from "assets/images/bg-coworking.jpeg";
 
 function HeaderOne() {
   return (
     <MKBox component="header" position="relative" height="100%">
-      <MKBox component="nav" position="absolute" top="0.5rem" width="100%">
+      { false && <MKBox component="nav" position="absolute" top="0.5rem" width="100%">
         <Container>
           <Grid container flexDirection="row" alignItems="center">
             <MKTypography
@@ -42,7 +43,7 @@ function HeaderOne() {
               py={0.8125}
               mr={2}
             >
-              Material Design
+              Material Design 2
             </MKTypography>
             <MKButton
               variant="outlined"
@@ -142,23 +143,23 @@ function HeaderOne() {
             </MKBox>
           </Grid>
         </Container>
-      </MKBox>
+      </MKBox> }
       <MKBox
         display="flex"
-        alignItems="center"
+        alignItems="end"
         minHeight="100%"
         sx={{
           backgroundImage: ({ palette: { gradients }, functions: { linearGradient, rgba } }) =>
             `${linearGradient(
-              rgba(gradients.dark.main, 0.5),
-              rgba(gradients.dark.state, 0.5)
-            )}, url(${bgImage})`,
+              rgba(gradients.dark.main, 0.2),
+              rgba(gradients.dark.state, 0.2)
+            )}, url(https://remax-listingphotos-ca5.imgix.net/rets-images-crea-can/d753fc81d7776af423a8fa26ad6449c6b2d91565-1-large.jpeg?fit=max&auto=format,compress&fm=pjpg&cs=srgb&q=35)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         <Container>
-          <Grid container item xs={12} md={7} lg={6} flexDirection="column" justifyContent="center">
+          <Grid mb={2} container item xs={12} md={7} lg={6} flexDirection="column" justifyContent="start">
             <MKTypography
               variant="h1"
               color="white"
@@ -169,17 +170,18 @@ function HeaderOne() {
                 },
               })}
             >
-              Material Kit
+              26 SKELTON ST
             </MKTypography>
-            <MKTypography variant="body1" color="white" opacity={0.8} pr={6} mr={6}>
-              The time is now for it be okay to be great. People in this world shun people for being
-              nice.
+            <MKTypography variant="body1" color="white" opacity={1} pr={6} mr={6}>
+              Mono, ON, L9W 6W9
             </MKTypography>
-            <Stack direction="row" spacing={1} mt={3}>
-              <MKButton color="white">Get Started</MKButton>
-              <MKButton variant="text" color="white">
-                Read more
-              </MKButton>
+            <MKTypography variant="body1" color="white" opacity={1} pr={6} mr={6}>
+            4 bed, 4 bath house
+            </MKTypography>
+            <Stack direction="row" spacing={2} mt={3}>
+              <MKButton color="primary">$1,499,888</MKButton>
+              <MKButton color="secondary">3D Tour</MKButton>
+              <MKButton color="secondary"><Icon>favorite</Icon>&nbsp;Add to favorites</MKButton>
             </Stack>
           </Grid>
         </Container>

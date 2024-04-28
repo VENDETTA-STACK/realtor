@@ -76,7 +76,7 @@ function View({ children, code, title, height, ...rest }) {
               {title}
             </MKTypography>
           </Grid>
-          <Grid item xs={12} lg={3}>
+          { false && <Grid item xs={12} lg={3}>
             <AppBar position="static">
               <Tabs value={activeTab} onChange={handleTabType}>
                 <Tab
@@ -105,7 +105,7 @@ function View({ children, code, title, height, ...rest }) {
                 />
               </Tabs>
             </AppBar>
-          </Grid>
+          </Grid>}
         </Grid>
       </MKBox>
       <MKBox display={activeTab === 0 ? "block" : "none"}>

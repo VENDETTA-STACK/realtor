@@ -32,24 +32,24 @@ import ExampleCard from "pages/Presentation/components/ExampleCard";
 import data from "pages/Presentation/sections/data/designBlocksData";
 
 function DesignBlocks() {
-  const renderData = data.map(({ title, description, items }) => (
+  const renderData = data.map(({ title, items }) => (
     <Grid container spacing={3} sx={{ mb: 10 }} key={title}>
       <Grid item xs={12} lg={3}>
         <MKBox position="sticky" top="100px" pb={{ xs: 2, lg: 6 }}>
           <MKTypography variant="h3" fontWeight="bold" mb={1}>
-            {title}
+            Properties
           </MKTypography>
           <MKTypography variant="body2" fontWeight="regular" color="secondary" mb={1} pr={2}>
-            {description}
+            A selection of 45 Properties that fit perfectly in any combination
           </MKTypography>
         </MKBox>
       </Grid>
       <Grid item xs={12} lg={9}>
         <Grid container spacing={3}>
-          {items.map(({ image, name, count, route, pro }) => (
+          {items.map(({ image, name, count, description, route, pro }, index) => (
             <Grid item xs={12} md={4} sx={{ mb: 2 }} key={name}>
               <Link to={pro ? "/" : route}>
-                <ExampleCard image={image} name={name} count={count} pro={pro} />
+                <ExampleCard image={image} description={description} name={`${name} ${index+1}`} count={count} pro={pro} />
               </Link>
             </Grid>
           ))}
@@ -59,7 +59,7 @@ function DesignBlocks() {
   ));
 
   return (
-    <MKBox component="section" my={6} py={6}>
+    <MKBox component="section" mt={-10} mb={6} py={6}>
       <Container>
         <Grid
           container
@@ -78,11 +78,10 @@ function DesignBlocks() {
             sx={{ mb: 2 }}
           />
           <MKTypography variant="h2" fontWeight="bold">
-            Huge collection of sections
+            Huge collection of Properties
           </MKTypography>
           <MKTypography variant="body1" color="text">
-            We have created multiple options for you to put together and customise into pixel
-            perfect pages.
+            We have created multiple options for you to choose from.
           </MKTypography>
         </Grid>
       </Container>

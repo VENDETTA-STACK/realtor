@@ -32,40 +32,34 @@ import FilledInfoCard from "examples/Cards/InfoCards/FilledInfoCard";
 import Counters from "pages/Presentation/sections/Counters";
 import Information from "pages/Presentation/sections/Information";
 import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
-import Pages from "pages/Presentation/sections/Pages";
+// import Pages from "pages/Presentation/sections/Pages";
 import Testimonials from "pages/Presentation/sections/Testimonials";
 import Download from "pages/Presentation/sections/Download";
 
 // Presentation page components
-import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
+// import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
 
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
 
 // Images
-import bgImage from "assets/images/bg-presentation.jpg";
+// import bgImage from "assets/images/bg-presentation.jpg";
 
 function Presentation() {
   return (
     <>
       <DefaultNavbar
         routes={routes}
-        action={{
-          type: "external",
-          route: "https://www.creative-tim.com/product/material-kit-react",
-          label: "free download",
-          color: "info",
-        }}
         sticky
       />
       <MKBox
         minHeight="75vh"
         width="100%"
         sx={{
-          backgroundImage: `url(${bgImage})`,
+          backgroundImage: `url(https://remax-prodapp.imgix.net/next-assets/hero-image/REMAX_Hero_Image_20220526.jpg?fit=max&auto=format,compress&fm=pjpg&cs=srgb&q=35)`,
           backgroundSize: "cover",
-          backgroundPosition: "top",
+          backgroundPosition: "center",
           display: "grid",
           placeItems: "center",
         }}
@@ -74,7 +68,6 @@ function Presentation() {
           <Grid container item xs={12} lg={7} justifyContent="center" mx="auto">
             <MKTypography
               variant="h1"
-              color="white"
               mt={-6}
               mb={1}
               sx={({ breakpoints, typography: { size } }) => ({
@@ -83,17 +76,15 @@ function Presentation() {
                 },
               })}
             >
-              Material Kit 2 React{" "}
+              MD Properties{" "}
             </MKTypography>
             <MKTypography
               variant="body1"
-              color="white"
               textAlign="center"
               px={{ xs: 6, lg: 12 }}
               mt={1}
             >
-              Free & Open Source Web UI Kit built over ReactJS &amp; MUI. Join over 1.6 million
-              developers around the world.
+              We make finding your dream property effortless and stress-free. Whether you're searching for your next home, investment property, or vacation getaway, our platform offers an unparalleled experience tailored to your needs.
             </MKTypography>
           </Grid>
         </Container>
@@ -110,12 +101,13 @@ function Presentation() {
         }}
       >
         <Counters />
-        <Information />
-        <DesignBlocks />
-        <Pages />
+        { false && <Information /> }
+        <DesignBlocks style={{ marginTop: '-100px' }} />
+        {/* <Pages />
         <Container sx={{ mt: 6 }}>
           <BuiltByDevelopers />
-        </Container>
+        </Container> */}
+        {false && <>
         <Container>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={4}>
@@ -161,7 +153,7 @@ function Presentation() {
           </Grid>
         </Container>
         <Testimonials />
-        <Download />
+        <Download /></>}
         <MKBox pt={18} pb={6}>
           <Container>
             <Grid container spacing={3}>
