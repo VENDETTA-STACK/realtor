@@ -7,11 +7,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MKButton from "components/MKButton";
 import "@fontsource/playfair-display";
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { storage, firestore } from "../../../Firebase.js";
+import { addDoc, collection } from "firebase/firestore"; 
 
 const Admin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const [dropdown, setDropdown] = useState(null);
   const [propertyType, setPropertyType] = useState("");
   const [listingType, setListingType] = useState("");
   const [bathrooms, setBathrooms] = useState("");
@@ -22,6 +24,7 @@ const Admin = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [selectedPropertyType, setSelectedPropertyType] = useState("Select Property Type");
+  const selectedFiles = [];
 
   const openDropdown = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,7 +78,6 @@ const Admin = () => {
   const handleFileSelect = (event) => {
     const files = event.target.files;
     const maxFiles = 10;
-    const selectedFiles = [];
   
     for (let i = 0; i < Math.min(files.length, maxFiles); i++) {
       selectedFiles.push(files[i]);
@@ -83,6 +85,52 @@ const Admin = () => {
     document.getElementById('select-image').innerHTML = `${selectedFiles.length} images selected`;
     console.log("Selected Images:", selectedFiles);
   };
+
+  const handleSubmit = async () => {
+    try {
+
+      if (selectedFiles.length === 0) {
+        alert("Please select at least one image.");
+        return;
+      }
+
+      const fileUrls = await Promise.all(selectedFiles.map(uploadFile)); // Upload all files concurrently
+      console.log("File URLs:", fileUrls);
+      const propertyData = {
+        propertyType: propertyType,
+        listingType: listingType,
+        bathrooms: bathrooms,
+        bedrooms: bedrooms,
+        basementType: basementType,
+        stories: stories,
+        sizeInterior: sizeInterior,
+        description: description,
+        price: price,
+        images: fileUrls // Assuming fileUrls is an array of image URLs
+      };
+      await addDoc(collection(firestore, "properties"), propertyData)
+      console.log("Property data saved successfully");
+    } catch (error) {
+      console.error("Error saving property data:", error);
+    }
+  };
+
+  const uploadFile = (file) => {
+    return new Promise((resolve, reject) => {
+      const timestamp = new Date().getTime(); // Get current timestamp
+      const filename = `${timestamp}_${file.name}`;
+
+      const storageRef = ref(storage, `images/${filename}`);
+      uploadBytes(storageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((downloadURL) => {
+          resolve(downloadURL);
+          console.log('File available at', downloadURL);
+        });
+        console.log('Uploaded a blob or file!');
+      });
+  });
+};
+
 
   useEffect(() => {
     setSelectedPropertyType(propertyType || "Select Property Type");
@@ -94,7 +142,6 @@ const Admin = () => {
         <h2>Add Property Posting</h2>
 
         <Grid container item xs={12} justifyContent="center">
-          {/* Wrap the Grid component in a container Grid */}
           <MKButton variant="gradient" color="info" onClick={openDropdown} className="equal-width-button">
             {selectedPropertyType || "Select Property Type"} <Icon>expand_more</Icon>
           </MKButton>
@@ -172,6 +219,12 @@ const Admin = () => {
               onChange={(e) => setSizeInterior(e.target.value)}
             />
             <InputOutlined
+              id="price"
+              label="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <InputOutlined
               id="description"
               label="Description"
               multiline
@@ -181,14 +234,14 @@ const Admin = () => {
             />
           </div>
         )}
-           <MKButton 
-  variant="gradient" 
-  color="info" 
-  onClick={() => console.log("Submit")}
-  style={{ display: 'block', margin: '10px auto' }}  // Add these styles inline
->
-  Submit
-</MKButton>
+            <MKButton 
+          variant="gradient" 
+          color="info" 
+          onClick={handleSubmit}
+          style={{ display: 'block', margin: '10px auto' }}
+        >
+          Submit
+        </MKButton>
       </div>
     </div>
   );
