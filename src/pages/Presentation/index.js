@@ -36,6 +36,7 @@ import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
 // import Pages from "pages/Presentation/sections/Pages";
 import Testimonials from "pages/Presentation/sections/Testimonials";
 import Download from "pages/Presentation/sections/Download";
+import RealtorImage from '../../assets/images/realtor3.JPEG'
 
 // Presentation page components
 // import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
@@ -59,6 +60,7 @@ function Presentation() {
         width="100%"
         sx={{
           backgroundImage: `url(https://remax-prodapp.imgix.net/next-assets/hero-image/REMAX_Hero_Image_20220526.jpg?fit=max&auto=format,compress&fm=pjpg&cs=srgb&q=35)`,
+          // backgroundImage: `url(${RealtorImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "grid",
