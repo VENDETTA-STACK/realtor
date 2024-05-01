@@ -24,7 +24,8 @@ import MKTypography from "components/MKTypography";
 import MKSocialButton from "components/MKSocialButton";
 
 // Material Kit 2 React examples
-import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+// import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+import DrawerAppBar from "examples/Navbars/DefaultNavbar/CustomizeNavbar";
 import DefaultFooter from "examples/Footers/DefaultFooter";
 import FilledInfoCard from "examples/Cards/InfoCards/FilledInfoCard";
 
@@ -49,8 +50,8 @@ import footerRoutes from "footer.routes";
 function Presentation() {
   return (
     <>
-      <DefaultNavbar
-        routes={routes}
+      <DrawerAppBar
+        // routes={routes}
         sticky
       />
       <MKBox
