@@ -31,7 +31,7 @@ import ExampleCard from "pages/Presentation/components/ExampleCard";
 // Data
 import data from "pages/Presentation/sections/data/designBlocksData";
 
-import { storage, firestore } from "../../../Firebase.js";
+import { firestore } from "../../../Firebase.js";
 import { getDocs, collection } from "firebase/firestore"; 
 import { useEffect, useState } from "react";
 
@@ -61,6 +61,7 @@ function DesignBlocks() {
     fetchProperties();
   }, []);
 
+  console.log(properties);
 
   const renderData = data.map(({ title, items }) => (
     <Grid container spacing={3} sx={{ mb: 10 }} key={title}>
@@ -76,10 +77,13 @@ function DesignBlocks() {
       </Grid>
       <Grid item xs={12} lg={9}>
         <Grid container spacing={3}>
-          {items.map(({ image, name, count, description, route, pro }, index) => (
-            <Grid item xs={12} md={4} sx={{ mb: 2 }} key={name}>
+          {properties.map(({ images, propertyType, id, count, description, route, pro }, index) => (
+            <Grid item xs={12} md={4} sx={{ mb: 2 }} key={id}>
               <Link to={pro ? "/" : route}>
-                <ExampleCard image={image} description={description} name={`${name} ${index+1}`} count={count} pro={pro} />
+                {images.map((image, imageIndex) => (
+                  <ExampleCard key={`${id}-${imageIndex}`} image={image} description={description} name={`${propertyType} ${index+1}`} count={count} pro={pro} />
+                ))}
+                {/* <ExampleCard image={image} description={description} name={`${name} ${index+1}`} count={count} pro={pro} /> */}
               </Link>
             </Grid>
           ))}
