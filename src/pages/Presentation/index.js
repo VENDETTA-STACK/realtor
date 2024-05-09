@@ -41,13 +41,14 @@ import RealtorImage from '../../assets/images/realtor3.JPEG'
 // Presentation page components
 // import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
 
-import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
-import { storage, firestore } from "../../Firebase.js";
-import { addDoc, collection } from "firebase/firestore"; 
-
 // Routes
 import routes from "routes";
 import footerRoutes from "footer.routes";
+
+// console.log(await fetchPosts())
+
+// Call the fetchPosts function wherever needed
+// fetchPosts();
 
 // Images
 // import bgImage from "assets/images/bg-presentation.jpg";

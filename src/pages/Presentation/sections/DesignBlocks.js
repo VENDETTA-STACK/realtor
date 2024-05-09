@@ -31,7 +31,37 @@ import ExampleCard from "pages/Presentation/components/ExampleCard";
 // Data
 import data from "pages/Presentation/sections/data/designBlocksData";
 
+import { storage, firestore } from "../../../Firebase.js";
+import { getDocs, collection } from "firebase/firestore"; 
+import { useEffect, useState } from "react";
+
+const propertiesCollection = collection(firestore, "properties");
+
 function DesignBlocks() {
+
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+
+    async function fetchProperties() {
+      try {
+        const querySnapshot = await getDocs(propertiesCollection);
+        const fetchedProperties = [];
+        querySnapshot.forEach((doc) => {
+          // Access each document
+          console.log(doc.id, " => ", doc.data());
+          fetchedProperties.push({ id: doc.id, ...doc.data() })
+        });
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error("Error fetching posts: ", error);
+      }
+    }
+
+    fetchProperties();
+  }, []);
+
+
   const renderData = data.map(({ title, items }) => (
     <Grid container spacing={3} sx={{ mb: 10 }} key={title}>
       <Grid item xs={12} lg={3}>

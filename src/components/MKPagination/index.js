@@ -27,11 +27,28 @@ import MKPaginationItemRoot from "components/MKPagination/MKPaginationItemRoot";
 // The Pagination main context
 const Context = createContext();
 
+const MKPaginationItem = forwardRef(({ children, ...rest }, ref) => {
+  const context = useContext(Context);
+  const { variant, color, size } = context;
+  
+  return (
+    <MKPaginationItemRoot
+      {...rest}
+      ref={ref}
+      variant={rest.active ? variant : "outlined"}
+      color={rest.active ? color : "secondary"}
+      iconOnly
+      circular
+      ownerState={{ variant, active: rest.active, paginationSize: size }}
+    >
+      {children}
+    </MKPaginationItemRoot>
+  );
+});
+
+// MKPagination component
 const MKPagination = forwardRef(
   ({ item, variant, color, size, active, children, placement, ...rest }, ref) => {
-    const context = item ? useContext(Context) : null;
-    const paginationSize = context ? context.size : null;
-    const paginationProps = useMemo(() => ({ variant, color, size }), []);
     let placementValue = "flex-end";
 
     if (placement === "left") {
@@ -41,19 +58,11 @@ const MKPagination = forwardRef(
     }
 
     return (
-      <Context.Provider value={paginationProps}>
+      <Context.Provider value={{ variant, color, size }}>
         {item ? (
-          <MKPaginationItemRoot
-            {...rest}
-            ref={ref}
-            variant={active ? context.variant : "outlined"}
-            color={active ? context.color : "secondary"}
-            iconOnly
-            circular
-            ownerState={{ variant, active, paginationSize }}
-          >
+          <MKPaginationItem {...rest} ref={ref} active={active}>
             {children}
-          </MKPaginationItemRoot>
+          </MKPaginationItem>
         ) : (
           <MKBox
             display="flex"
@@ -68,6 +77,48 @@ const MKPagination = forwardRef(
     );
   }
 );
+
+// const MKPagination = forwardRef(
+//   ({ item, variant, color, size, active, children, placement, ...rest }, ref) => {
+//     const context = item ? useContext(Context) : null;
+//     const paginationSize = context ? context.size : null;
+//     const paginationProps = useMemo(() => ({ variant, color, size }), []);
+//     let placementValue = "flex-end";
+
+//     if (placement === "left") {
+//       placementValue = "flex-start";
+//     } else if (placement === "center") {
+//       placementValue = "center";
+//     }
+
+//     return (
+//       <Context.Provider value={paginationProps}>
+//         {item ? (
+//           <MKPaginationItemRoot
+//             {...rest}
+//             ref={ref}
+//             variant={active ? context.variant : "outlined"}
+//             color={active ? context.color : "secondary"}
+//             iconOnly
+//             circular
+//             ownerState={{ variant, active, paginationSize }}
+//           >
+//             {children}
+//           </MKPaginationItemRoot>
+//         ) : (
+//           <MKBox
+//             display="flex"
+//             justifyContent={placementValue}
+//             alignItems="center"
+//             sx={{ listStyle: "none" }}
+//           >
+//             {children}
+//           </MKBox>
+//         )}
+//       </Context.Provider>
+//     );
+//   }
+// );
 
 // Setting default values for the props of MKPagination
 MKPagination.defaultProps = {
