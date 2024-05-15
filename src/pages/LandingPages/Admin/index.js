@@ -86,6 +86,11 @@ const Admin = () => {
     console.log("Selected Images:", selectedFiles);
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
   const handleSubmit = async () => {
     try {
 
@@ -106,6 +111,7 @@ const Admin = () => {
         sizeInterior: sizeInterior,
         description: description,
         price: price,
+        timestamp: new Date().getTime(),
         images: fileUrls // Assuming fileUrls is an array of image URLs
       };
       await addDoc(collection(firestore, "properties"), propertyData)
@@ -136,6 +142,9 @@ const Admin = () => {
     setSelectedPropertyType(propertyType || "Select Property Type");
   }, [propertyType]);
 
+  const handleBathroomsChange = (e) => {
+    setBathrooms(e.target.value);
+  };
   return (
     <div className="admin-container">
       <div className="admin-form">
@@ -189,8 +198,7 @@ const Admin = () => {
               id="bathrooms"
               label="Bathrooms"
               type="number"
-              value={bathrooms}
-              onChange={(e) => setBathrooms(e.target.value)}
+              onChange={handleBathroomsChange}
             />
             <InputOutlined
               id="bedrooms"
