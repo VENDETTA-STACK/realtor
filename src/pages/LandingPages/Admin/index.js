@@ -1,5 +1,6 @@
 import "./admin.css";
 import React, { useState, useEffect } from "react";
+import { FormControl, InputLabel, Select, TextField, Button } from "@mui/material";
 import InputOutlined from "layouts/sections/input-areas/inputs/components/InputOutlined";
 import Grid from "@mui/material/Grid"; // Import Grid from Material-UI
 import Icon from "@mui/material/Icon";
@@ -37,6 +38,8 @@ const Admin = () => {
   const handleSelect = (type) => {
     setPropertyType(type);
     setSelectedPropertyType(type);
+
+    console.log(selectedPropertyType);
     closeDropdown();
   };
 
@@ -101,6 +104,12 @@ const Admin = () => {
 
       const fileUrls = await Promise.all(selectedFiles.map(uploadFile)); // Upload all files concurrently
       console.log("File URLs:", fileUrls);
+
+      if (!propertyType || !listingType || !selectedFiles.length || !price || !description || !bedrooms || !basementType || !stories || !sizeInterior || !bathrooms) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      
       const propertyData = {
         propertyType: propertyType,
         listingType: listingType,
@@ -112,10 +121,26 @@ const Admin = () => {
         description: description,
         price: price,
         timestamp: new Date().getTime(),
-        images: fileUrls // Assuming fileUrls is an array of image URLs
+        images: fileUrls 
       };
+
       await addDoc(collection(firestore, "properties"), propertyData)
       console.log("Property data saved successfully");
+      alert("Property data saved successfully");
+      //
+      setPropertyType("");
+      setListingType("");
+      setBathrooms("");
+      setBedrooms("");
+      setBasementType("");
+      setStories("");
+      setSizeInterior("");
+      setDescription("");
+      setPrice("");
+      setSelectedPropertyType("Select Property Type");
+      selectedFiles.length = 0;
+      document.getElementById('select-image').innerHTML = "Select Images";
+      //
     } catch (error) {
       console.error("Error saving property data:", error);
     }
@@ -123,7 +148,7 @@ const Admin = () => {
 
   const uploadFile = (file) => {
     return new Promise((resolve, reject) => {
-      const timestamp = new Date().getTime(); // Get current timestamp
+      const timestamp = new Date().getTime();
       const filename = `${timestamp}_${file.name}`;
 
       const storageRef = ref(storage, `images/${filename}`);
@@ -143,8 +168,38 @@ const Admin = () => {
   }, [propertyType]);
 
   const handleBathroomsChange = (e) => {
-    setBathrooms(e.target.value);
+    const value = e.target.value;
+    setBathrooms(value);
   };
+
+  const handleBedroomsChange = (e) => {
+    const value = e.target.value;
+    setBedrooms(value);
+  };
+
+  const handleBasementTypeChange = (e) => {
+    setBasementType(e.target.value);
+  };
+
+  const handleStoriesChange = (e) => {
+    const value = e.target.value;
+    setStories(value);
+
+  };
+
+  const handleSizeInteriorChange = (e) => {
+    setSizeInterior(e.target.value);
+  };
+
+  const handlePriceChange = (e) => {
+    const value = e.target.value;
+    setPrice(value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+  
   return (
     <div className="admin-container">
       <div className="admin-form">
@@ -177,69 +232,89 @@ const Admin = () => {
 
         {propertyType === "Commercial" ? (
           <div>
-            <InputOutlined
-              id="price"
+            <TextField
               label="Price"
+              type="number"
+              variant="outlined"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={handlePriceChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-             <InputOutlined
-              id="description"
+
+            <TextField
               label="Description"
               multiline
               rows={4}
+              variant="outlined"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={handleDescriptionChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
           </div>
         ) : (
           <div>
-            <InputOutlined
-              id="bathrooms"
+            <TextField
               label="Bathrooms"
               type="number"
+              variant="outlined"
+              value={bathrooms}
               onChange={handleBathroomsChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="bedrooms"
+
+            <TextField
               label="Bedrooms"
               type="number"
+              variant="outlined"
               value={bedrooms}
-              onChange={(e) => setBedrooms(e.target.value)}
+              onChange={handleBedroomsChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="basementType"
+
+            <TextField
               label="Basement Type"
+              variant="outlined"
               value={basementType}
-              onChange={(e) => setBasementType(e.target.value)}
+              onChange={handleBasementTypeChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="stories"
+
+            <TextField
               label="Stories"
               type="number"
+              variant="outlined"
               value={stories}
-              onChange={(e) => setStories(e.target.value)}
+              onChange={handleStoriesChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="sizeInterior"
+
+            <TextField
               label="Size Interior"
+              variant="outlined"
               value={sizeInterior}
-              onChange={(e) => setSizeInterior(e.target.value)}
+              onChange={handleSizeInteriorChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="price"
+
+            <TextField
               label="Price"
+              type="number"
+              variant="outlined"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={handlePriceChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
-            <InputOutlined
-              id="description"
+
+            <TextField
               label="Description"
               multiline
               rows={4}
+              variant="outlined"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={handleDescriptionChange}
+              sx={{ width: '80%', marginBottom: '16px' }}
             />
+
           </div>
         )}
             <MKButton 
