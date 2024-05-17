@@ -6,7 +6,6 @@ import "@fontsource/playfair-display";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { storage, firestore } from "../../../Firebase.js";
 import { addDoc, collection } from "firebase/firestore";
-import { red } from "@mui/material/colors";
 
 const Admin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
