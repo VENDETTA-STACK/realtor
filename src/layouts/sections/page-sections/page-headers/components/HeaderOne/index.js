@@ -12,6 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import PropTypes from "prop-types";
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -28,7 +29,7 @@ import MKTypography from "components/MKTypography";
 // Images
 // import bgImage from "assets/images/bg-coworking.jpeg";
 
-function HeaderOne() {
+function HeaderOne({ bedrooms, images, propertyType, listingType, description, stories, bathrooms, sizeInterior, basementType, price }) {
   return (
     <MKBox component="header" position="relative" height="100%">
       { false && <MKBox component="nav" position="absolute" top="0.5rem" width="100%">
@@ -153,9 +154,10 @@ function HeaderOne() {
             `${linearGradient(
               rgba(gradients.dark.main, 0.2),
               rgba(gradients.dark.state, 0.2)
-            )}, url(https://remax-listingphotos-ca5.imgix.net/rets-images-crea-can/d753fc81d7776af423a8fa26ad6449c6b2d91565-1-large.jpeg?fit=max&auto=format,compress&fm=pjpg&cs=srgb&q=35)`,
-          backgroundSize: "cover",
+            )}, url(${images})`,
+          backgroundSize: "contain",
           backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <Container>
@@ -176,12 +178,12 @@ function HeaderOne() {
               Mono, ON, L9W 6W9
             </MKTypography>
             <MKTypography variant="body1" color="white" opacity={1} pr={6} mr={6}>
-            4 bed, 4 bath house
+            {bedrooms} bed, {bathrooms} bath {propertyType}
             </MKTypography>
             <Stack direction="row" spacing={2} mt={3}>
-              <MKButton color="primary">$1,499,888</MKButton>
-              <MKButton color="secondary">3D Tour</MKButton>
-              <MKButton color="secondary"><Icon>favorite</Icon>&nbsp;Add to favorites</MKButton>
+              <MKButton color="primary">${price}</MKButton>
+              {/* <MKButton color="secondary">3D Tour</MKButton>
+              <MKButton color="secondary"><Icon>favorite</Icon>&nbsp;Add to favorites</MKButton> */}
             </Stack>
           </Grid>
         </Container>
@@ -189,5 +191,20 @@ function HeaderOne() {
     </MKBox>
   );
 }
+
+HeaderOne.propTypes = {
+  // breadcrumb: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
+  bedrooms: PropTypes.string.isRequired,
+  bathrooms: PropTypes.string.isRequired,
+  images: PropTypes.string.isRequired,
+  propertyType: PropTypes.string.isRequired,
+  listingType: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  stories: PropTypes.string.isRequired,
+  sizeInterior: PropTypes.string.isRequired,
+  basementType: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  // children: PropTypes.node.isRequired,
+};
 
 export default HeaderOne;
