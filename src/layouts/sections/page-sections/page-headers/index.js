@@ -24,17 +24,24 @@ import MKButton from "components/MKButton";
 
 // PageHeaders page components
 import HeaderOne from "layouts/sections/page-sections/page-headers/components/HeaderOne";
+import { useLocation } from 'react-router-dom';
 
 // PageHeaders page components code
 // import headerOneCode from "layouts/sections/page-sections/page-headers/components/HeaderOne/code";
 
 function PageHeaders() {
+
+  const location = useLocation();
+  const searchData = new URLSearchParams(location.search);
+
+  console.log('-------------', searchData);
+
   return (
     <BaseLayout
       title="Properties"
       breadcrumb={[
         { label: "Properties", route: "/sections/page-sections/page-headers" },
-        { label: "26 SKELTON ST" },
+        { label: searchData.get('propertyType') },
       ]}
     >
       <View title="26 SKELTON ST" height="40rem">

@@ -37,6 +37,12 @@ import { useEffect, useState } from "react";
 
 const propertiesCollection = collection(firestore, "properties");
 
+const objectToQueryString = (obj) => {
+  return Object.keys(obj)
+    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+    .join('&');
+}
+
 function DesignBlocks() {
 
   const [properties, setProperties] = useState([]);
@@ -77,11 +83,16 @@ function DesignBlocks() {
       </Grid>
       <Grid item xs={12} lg={9}>
         <Grid container spacing={3}>
-          {properties.map(({ images, propertyType, id, count, description, route, pro }, index) => (
-            <Grid item xs={12} md={4} sx={{ mb: 2 }} key={id}>
-              <Link to={pro ? "/" : route}>
-                {images.map((image, imageIndex) => (
-                  <ExampleCard key={`${id}-${imageIndex}`} image={image} description={description} name={`${propertyType} ${index+1}`} count={count} pro={pro} />
+          {properties.map((propertyIs, index) => (
+            <Grid item xs={12} md={4} sx={{ mb: 2 }} key={propertyIs.id}>
+              <Link 
+                to={{
+                  pathname: propertyIs.pro ? '/' : '/sections/page-sections/page-headers',
+                  search: objectToQueryString(propertyIs)
+                }}
+              >
+                {propertyIs.images.map((image, imageIndex) => (
+                  <ExampleCard key={`${propertyIs.id}-${imageIndex}`} image={image} description={propertyIs.description} name={`${propertyIs.propertyType} ${index+1}`} count={propertyIs.count} pro={propertyIs.pro} />
                 ))}
                 {/* <ExampleCard image={image} description={description} name={`${name} ${index+1}`} count={count} pro={pro} /> */}
               </Link>
