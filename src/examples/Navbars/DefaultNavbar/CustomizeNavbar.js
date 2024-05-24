@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 const navItems = [
   { text: 'Home', path: '/' },
-  { text: 'About', path: '/pages/landing-pages/about-us' },
+  { text: 'About', path: '/about' },
   { text: 'Contact', path: '/contact' },
 ];
 

@@ -9,16 +9,16 @@ const teamMembers = [
     role: 'CEO',
     image: RealtorImage
   },
-//   {
-//     name: 'Jane Smith',
-//     role: 'CTO',
-//     image: RealtorImage
-//   },
-//   {
-//     name: 'Alice Johnson',
-//     role: 'Lead Developer',
-//     image: RealtorImage
-//   }
+  {
+    name: 'Jane Smith',
+    role: 'CTO',
+    image: RealtorImage
+  },
+  {
+    name: 'Alice Johnson',
+    role: 'Lead Developer',
+    image: RealtorImage
+  }
 ];
 
 function CustomizeAboutUs() {
