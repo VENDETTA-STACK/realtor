@@ -138,7 +138,7 @@ function SignInBasic() {
                     </MKTypography>
                   </MKBox>
                   <MKBox mt={4} mb={1}>
-                    <MKButton variant="gradient" color="info" fullWidth>
+                    <MKButton variant="gradient" color="info" fullWidth onClick={() => console.log("Sign in")}>
                       sign in
                     </MKButton>
                   </MKBox>
