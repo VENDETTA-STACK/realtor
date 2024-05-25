@@ -6,15 +6,15 @@ import Grid from "@mui/material/Grid"; // Import Grid from Material-UI
 import Icon from "@mui/material/Icon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, TextField, Grid, Icon } from "@mui/material";
 import MKButton from "components/MKButton";
 import "@fontsource/playfair-display";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { storage, firestore } from "../../../Firebase.js";
-import { addDoc, collection } from "firebase/firestore"; 
+import { addDoc, collection } from "firebase/firestore";
 
 const Admin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [propertyType, setPropertyType] = useState("");
   const [listingType, setListingType] = useState("");
   const [bathrooms, setBathrooms] = useState("");
@@ -26,6 +26,8 @@ const Admin = () => {
   const [price, setPrice] = useState("");
   const [selectedPropertyType, setSelectedPropertyType] = useState("Select Property Type");
   const selectedFiles = [];
+
+  const [listingTypeDropdown, setListingTypeDropdown] = useState(null);
 
   const openDropdown = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,30 +60,28 @@ const Admin = () => {
 
   const HouseTypes = ["House", "Condo", "Townhouse", "Apartment", "Commercial"];
 
-  const [listingTypeDropdown, setListingTypeDropdown] = useState(null);
-
   const openListingTypeDropdown = ({ currentTarget }) => setListingTypeDropdown(currentTarget);
   const closeListingTypeDropdown = () => setListingTypeDropdown(null);
 
   const handleListingTypeSelection = (value) => {
     setListingType(value);
-    closeListingTypeDropdown(); // Close the dropdown after selection
+    closeListingTypeDropdown();
   };
 
   const onSelectImagesClicked = () => {
-  const inputElement = document.createElement('input');
-  inputElement.type = 'file';
-  inputElement.accept = 'image/*';
-  inputElement.multiple = true;
-  inputElement.click();
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = 'image/*';
+    inputElement.multiple = true;
+    inputElement.click();
 
-  inputElement.addEventListener('change', handleFileSelect);
+    inputElement.addEventListener('change', handleFileSelect);
   };
 
   const handleFileSelect = (event) => {
     const files = event.target.files;
     const maxFiles = 10;
-  
+
     for (let i = 0; i < Math.min(files.length, maxFiles); i++) {
       selectedFiles.push(files[i]);
     }
@@ -89,27 +89,20 @@ const Admin = () => {
     console.log("Selected Images:", selectedFiles);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
-
   const handleSubmit = async () => {
     try {
-
       if (selectedFiles.length === 0) {
         alert("Please select at least one image.");
         return;
       }
 
-      const fileUrls = await Promise.all(selectedFiles.map(uploadFile)); // Upload all files concurrently
+      const fileUrls = await Promise.all(selectedFiles.map(uploadFile));
       console.log("File URLs:", fileUrls);
 
       if (!propertyType || !listingType || !selectedFiles.length || !price || !description || !bedrooms || !basementType || !stories || !sizeInterior || !bathrooms) {
         alert("Please fill in all required fields.");
         return;
       }
-      
       const propertyData = {
         propertyType: propertyType,
         listingType: listingType,
@@ -121,11 +114,24 @@ const Admin = () => {
         description: description,
         price: price,
         timestamp: new Date().getTime(),
-        images: fileUrls // Assuming fileUrls is an array of image URLs
+        images: fileUrls
       };
 
       await addDoc(collection(firestore, "properties"), propertyData)
       console.log("Property data saved successfully");
+      alert("Property data saved successfully");
+      setPropertyType("");
+      setListingType("");
+      setBathrooms("");
+      setBedrooms("");
+      setBasementType("");
+      setStories("");
+      setSizeInterior("");
+      setDescription("");
+      setPrice("");
+      setSelectedPropertyType("Select Property Type");
+      selectedFiles.length = 0;
+      document.getElementById('select-image').innerHTML = "Select Images";
     } catch (error) {
       console.error("Error saving property data:", error);
     }
@@ -133,7 +139,7 @@ const Admin = () => {
 
   const uploadFile = (file) => {
     return new Promise((resolve, reject) => {
-      const timestamp = new Date().getTime(); // Get current timestamp
+      const timestamp = new Date().getTime();
       const filename = `${timestamp}_${file.name}`;
 
       const storageRef = ref(storage, `images/${filename}`);
@@ -144,9 +150,8 @@ const Admin = () => {
         });
         console.log('Uploaded a blob or file!');
       });
-  });
-};
-
+    });
+  };
 
   useEffect(() => {
     setSelectedPropertyType(propertyType || "Select Property Type");
@@ -204,11 +209,30 @@ const Admin = () => {
     setDescription(e.target.value);
   };
   
+
+  const handleSignOut = () => {
+    // Add your sign out logic here
+    console.log("User signed out");
+  };
+
+  const handleReviewListings = () => {
+    // Add your logic to navigate to review listings page
+    console.log("Navigating to review listings");
+  };
+
   return (
     <div className="admin-container">
+      <AppBar position="sticky" sx={{ backgroundColor: "#4a86e5" }}>
+        <Toolbar>
+          <Typography color="#fff" variant="h6" sx={{ flexGrow: 1 }}>
+            Admin Dashboard
+          </Typography>
+          <Button style={{ color: '#fff' }} onClick={handleReviewListings}>Review Listings</Button>
+          <Button style={{ color: '#fff' }} onClick={handleSignOut}>Sign Out</Button>
+        </Toolbar>
+      </AppBar>
       <div className="admin-form">
-        <h2>Add Property Posting</h2>
-
+        <h3>Add Property Posting</h3>
         <Grid container item xs={12} justifyContent="center">
           <MKButton variant="gradient" color="info" onClick={openDropdown} className="equal-width-button">
             {selectedPropertyType || "Select Property Type"} <Icon>expand_more</Icon>
@@ -221,7 +245,6 @@ const Admin = () => {
               )
             ))}
           </Menu>
-
           <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
             {listingType || "Select Listing Type"} <Icon>expand_more</Icon>
           </MKButton>
@@ -233,7 +256,6 @@ const Admin = () => {
             Select Images
           </MKButton>
         </Grid>
-
         {propertyType === "Commercial" ? (
           <div>
             <TextField
@@ -244,7 +266,6 @@ const Admin = () => {
               onChange={handlePriceChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Description"
               multiline
@@ -265,7 +286,6 @@ const Admin = () => {
               onChange={handleBathroomsChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Bedrooms"
               type="number"
@@ -274,7 +294,6 @@ const Admin = () => {
               onChange={handleBedroomsChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Basement Type"
               variant="outlined"
@@ -282,7 +301,6 @@ const Admin = () => {
               onChange={handleBasementTypeChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Stories"
               type="number"
@@ -291,7 +309,6 @@ const Admin = () => {
               onChange={handleStoriesChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Size Interior"
               variant="outlined"
@@ -299,7 +316,6 @@ const Admin = () => {
               onChange={handleSizeInteriorChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Price"
               type="number"
@@ -308,7 +324,6 @@ const Admin = () => {
               onChange={handlePriceChange}
               sx={{ width: '80%', marginBottom: '16px' }}
             />
-
             <TextField
               label="Description"
               multiline
@@ -321,11 +336,11 @@ const Admin = () => {
 
           </div>
         )}
-            <MKButton 
-          variant="gradient" 
-          color="info" 
+        <MKButton
+          variant="gradient"
+          color="info"
           onClick={handleSubmit}
-          style={{ display: 'block', margin: '10px auto' }}
+          className="submit-button"
         >
           Submit
         </MKButton>
