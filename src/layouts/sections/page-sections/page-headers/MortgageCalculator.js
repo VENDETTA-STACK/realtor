@@ -28,7 +28,7 @@ function MortgageCalculator() {
       <Typography variant="h5" gutterBottom>Mortgage Calculator</Typography>
       <Box component="form" noValidate autoComplete="off">
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Mortgage Amount"
               value={mortgageAmount}
@@ -37,7 +37,7 @@ function MortgageCalculator() {
               margin="normal"
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Interest Rate (%)"
               value={interestRate}
@@ -46,7 +46,18 @@ function MortgageCalculator() {
               margin="normal"
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          {/* <Grid item xs={12} sm={4}>
+            <TextField
+              label="Amortization Period (years)"
+              value={amortizationPeriod}
+              onChange={(e) => setAmortizationPeriod(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+          </Grid> */}
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
             <TextField
               label="Amortization Period (years)"
               value={amortizationPeriod}
