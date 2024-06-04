@@ -59,9 +59,9 @@ function PageHeaders() {
       </View>
       <MKBox>
           <Stack direction="row" spacing={5} mt={-8} mb={2} justifyContent="space-between">
-          <MKButton variant="outlined" color="info">Take 3D Tour</MKButton>
+            {/* <MKButton variant="outlined" color="info">Take 3D Tour</MKButton>
             <MKButton variant="contained" color="info">Connect to an agent</MKButton>
-            <MKButton variant="outlined" color="info">See all photos</MKButton>
+            <MKButton variant="outlined" color="info">See all photos</MKButton> */}
           </Stack>
         <Grid container item xs={12} justifyContent="center">
           <MKTypography variant="h4">
