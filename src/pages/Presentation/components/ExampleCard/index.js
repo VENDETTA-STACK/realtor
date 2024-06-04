@@ -1,29 +1,13 @@
-/*
-=========================================================
-* Material Kit 2 React - v2.1.0
-=========================================================
+// ExampleCard.js
 
-* Product Page: https://www.creative-tim.com/product/material-kit-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// @mui material components
 import Tooltip from "@mui/material/Tooltip";
-
-// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
+import BedIcon from "@mui/icons-material/Bed";
+import BathtubIcon from "@mui/icons-material/Bathtub";
 
-function ExampleCard({ image, name, description, count, pro, ...rest }) {
+function ExampleCard({ image, name, description, count, pro, bedrooms, bathrooms, ...rest }) {
   const imageTemplate = (
     <MKBox
       bgColor="white"
@@ -88,25 +72,39 @@ function ExampleCard({ image, name, description, count, pro, ...rest }) {
       ) : (
         imageTemplate
       )}
-      {name || count > 0 ? (
-        <MKBox mt={1} ml={1} lineHeight={1}>
-          {name && (
-            <MKTypography variant="h6" fontWeight="bold">
-              {name}
-            </MKTypography>
-          )}
-          {description && (
-            <MKTypography variant="subtitle2" fontWeight="regular">
-              {description}
-            </MKTypography>
-          )}
-          {count > 0 && (
-            <MKTypography variant="button" fontWeight="regular" color="secondary">
-              {count} {count === 1 ? "View" : "Views"}
-            </MKTypography>
-          )}
-        </MKBox>
-      ) : null}
+      <MKBox mt={1} ml={1} lineHeight={1}>
+        {name && (
+          <MKTypography variant="h6" fontWeight="bold">
+            {name}
+          </MKTypography>
+        )}
+        {description && (
+          <MKTypography variant="subtitle2" fontWeight="regular">
+            {description}
+          </MKTypography>
+        )}
+        {(bedrooms || bathrooms) && (
+          <MKBox display="flex" alignItems="center" mt={1}>
+            {bedrooms && (
+              <MKTypography variant="body2" fontWeight="regular" color="textSecondary" mr={2}>
+                <BedIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                {bedrooms} {bedrooms === 1 ? "Bedroom" : "Bedrooms"}
+              </MKTypography>
+            )}
+            {bathrooms && (
+              <MKTypography variant="body2" fontWeight="regular" color="textSecondary">
+                <BathtubIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                {bathrooms} {bathrooms === 1 ? "Bathroom" : "Bathrooms"}
+              </MKTypography>
+            )}
+          </MKBox>
+        )}
+        {count > 0 && (
+          <MKTypography variant="button" fontWeight="regular" color="secondary">
+            {count} {count === 1 ? "View" : "Views"}
+          </MKTypography>
+        )}
+      </MKBox>
     </MKBox>
   );
 }
@@ -116,6 +114,8 @@ ExampleCard.defaultProps = {
   name: "",
   count: 0,
   pro: false,
+  bedrooms: 0,
+  bathrooms: 0,
 };
 
 // Typechecking props for the ExampleCard
@@ -124,6 +124,8 @@ ExampleCard.propTypes = {
   name: PropTypes.string,
   count: PropTypes.number,
   pro: PropTypes.bool,
+  bedrooms: PropTypes.number,
+  bathrooms: PropTypes.number,
 };
 
 export default ExampleCard;

@@ -51,6 +51,8 @@ function DesignBlocks() {
     setFilter({ ...filter, [event.target.name]: event.target.value });
   };
 
+  console.log(properties)
+
   const filteredProperties = properties.filter(property => 
     (filter.propertyType ? property.propertyType === filter.propertyType : true) &&
     (filter.listingType ? property.listingType === filter.listingType : true) &&
@@ -83,7 +85,17 @@ function DesignBlocks() {
                 }}
               >
                 {property.images.map((image, imageIndex) => (
-                  <ExampleCard key={`${property.id}-${imageIndex}`} image={image} description={property.description} name={`${property.propertyType} ${index+1}`} count={property.count} pro={property.pro} />
+                  // <ExampleCard key={`${property.id}-${imageIndex}`} image={image} description={property.description} name={`${property.propertyType} ${index+1}`} count={property.count} pro={property.pro} />
+                  <ExampleCard 
+                    key={`${property.id}-${imageIndex}`} 
+                    image={image} 
+                    description={property.description} 
+                    name={`${property.propertyType} ${index+1}`} 
+                    count={property.count} 
+                    pro={property.pro} 
+                    bedrooms={property.bedrooms}
+                    bathrooms={property.bathrooms}
+                  />
                 ))}
               </Link>
             </Grid>
