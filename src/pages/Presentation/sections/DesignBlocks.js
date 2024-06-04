@@ -22,7 +22,14 @@ const objectToQueryString = (obj) => {
 
 function DesignBlocks() {
   const [properties, setProperties] = useState([]);
-  const [filter, setFilter] = useState({ propertyType: '', listingType: '' });
+  const [filter, setFilter] = useState({ 
+                                propertyType: '', 
+                                listingType: '', 
+                                bedrooms: '', 
+                                bathrooms: '', 
+                                minPrice: '', 
+                                maxPrice: '' 
+                              });
 
   useEffect(() => {
     async function fetchProperties() {
@@ -46,7 +53,11 @@ function DesignBlocks() {
 
   const filteredProperties = properties.filter(property => 
     (filter.propertyType ? property.propertyType === filter.propertyType : true) &&
-    (filter.listingType ? property.listingType === filter.listingType : true)
+    (filter.listingType ? property.listingType === filter.listingType : true) &&
+    (filter.bedrooms ? property.bedrooms === filter.bedrooms : true) &&
+    (filter.bathrooms ? property.bathrooms === filter.bathrooms : true) &&
+    (filter.minPrice ? parseFloat(property.price) >= parseFloat(filter.minPrice) : true) &&
+    (filter.maxPrice ? parseFloat(property.price) <= parseFloat(filter.maxPrice) : true)
   );
 
   const renderData = data.map(({ title }) => (
@@ -106,22 +117,23 @@ function DesignBlocks() {
               sx={{ mb: 2 }}
               InputProps={{
                 sx: {
-                  fontSize: '1rem', // Increase the font size
-                  padding: '10px 12px', // Increase padding
+                  fontSize: '1rem',
+                  padding: '10px 12px',
                 },
               }}
               InputLabelProps={{
                 sx: {
-                  fontSize: '0.75rem', // Increase the font size of the label
+                  fontSize: '0.75rem',
                 },
               }}
             >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="House">House</MenuItem>
               <MenuItem value="Apartment">Apartment</MenuItem>
-              {/* Add more property types as needed */}
+
             </TextField>
           </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <TextField
               select
@@ -133,22 +145,127 @@ function DesignBlocks() {
               sx={{ mb: 2 }}
               InputProps={{
                 sx: {
-                  fontSize: '1rem', // Increase the font size
-                  padding: '10px 12px', // Increase padding
+                  fontSize: '1rem',
+                  padding: '10px 12px', 
                 },
               }}
               InputLabelProps={{
                 sx: {
-                  fontSize: '0.75rem', // Increase the font size of the label
+                  fontSize: '0.75rem',
                 },
               }}
             >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="For Sale">For Sale</MenuItem>
               <MenuItem value="For Rent">For Rent</MenuItem>
-              {/* Add more listing types as needed */}
+              
             </TextField>
           </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <TextField
+              select
+              label="Bedrooms"
+              name="bedrooms"
+              value={filter.bedrooms}
+              onChange={handleFilterChange}
+              fullWidth
+              sx={{ mb: 2 }}
+              InputProps={{
+                sx: {
+                  fontSize: '1rem',
+                  padding: '10px 12px',
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  fontSize: '0.75rem',
+                },
+              }}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+              <MenuItem value="3">3</MenuItem>
+              <MenuItem value="4">4</MenuItem>
+              <MenuItem value="5">5</MenuItem>
+              
+            </TextField>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <TextField
+              select
+              label="Bathrooms"
+              name="bathrooms"
+              value={filter.bathrooms}
+              onChange={handleFilterChange}
+              fullWidth
+              sx={{ mb: 2 }}
+              InputProps={{
+                sx: {
+                  fontSize: '1rem',
+                  padding: '10px 12px',
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  fontSize: '0.75rem',
+                },
+              }}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">1</MenuItem>
+              <MenuItem value="2">2</MenuItem>
+              <MenuItem value="3">3</MenuItem>
+              <MenuItem value="4">4</MenuItem>
+            </TextField>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <TextField
+              label="Min Price"
+              name="minPrice"
+              value={filter.minPrice}
+              onChange={handleFilterChange}
+              fullWidth
+              sx={{ mb: 2 }}
+              InputProps={{
+                sx: {
+                  fontSize: '1rem', 
+                  padding: '10px 12px',
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  fontSize: '0.75rem',
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <TextField
+              label="Max Price"
+              name="maxPrice"
+              value={filter.maxPrice}
+              onChange={handleFilterChange}
+              fullWidth
+              sx={{ mb: 2 }}
+              InputProps={{
+                sx: {
+                  fontSize: '1rem',
+                  padding: '10px 12px',
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  fontSize: '0.75rem',
+                },
+              }}
+            />
+          </Grid>
+
         </Grid>
       </Container>
       <Container sx={{ mt: 6 }}>{renderData}</Container>
