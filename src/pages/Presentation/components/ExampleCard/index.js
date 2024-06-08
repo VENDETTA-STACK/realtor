@@ -1,19 +1,23 @@
 // ExampleCard.js
 
 import PropTypes from "prop-types";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Tooltip from "@mui/material/Tooltip";
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import BedIcon from "@mui/icons-material/Bed";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 
-function ExampleCard({ image, name, description, count, pro, bedrooms, bathrooms, ...rest }) {
+function ExampleCard({ images, name, description, count, pro, bedrooms, bathrooms, link, ...rest }) {
+
   const imageTemplate = (
     <MKBox
       bgColor="white"
       borderRadius="xl"
       shadow="lg"
       minHeight="10rem"
+      height="250px"
       sx={{
         overflow: "hidden",
         transform: "perspective(999px) rotateX(0deg) translate3d(0, 0, 0)",
@@ -52,14 +56,19 @@ function ExampleCard({ image, name, description, count, pro, bedrooms, bathrooms
           </svg>
         </MKBox>
       )}
-      <MKBox
-        component="img"
-        src={image}
-        alt={name}
-        width="100%"
-        my="auto"
-        opacity={pro ? 0.6 : 1}
-      />
+      <Carousel showThumbs={false} infiniteLoop autoPlay>
+        {images.map((image, index) => (
+          <MKBox
+            key={index}
+            component="img"
+            src={image}
+            alt={`${name} ${index + 1}`}
+            width="100%"
+            my="auto"
+            opacity={pro ? 0.6 : 1}
+          />
+        ))}
+      </Carousel>
     </MKBox>
   );
 
@@ -116,16 +125,18 @@ ExampleCard.defaultProps = {
   pro: false,
   bedrooms: 0,
   bathrooms: 0,
+  link: '/',
 };
 
 // Typechecking props for the ExampleCard
 ExampleCard.propTypes = {
-  image: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
   name: PropTypes.string,
   count: PropTypes.number,
   pro: PropTypes.bool,
   bedrooms: PropTypes.number,
   bathrooms: PropTypes.number,
+  link: PropTypes.string,
 };
 
 export default ExampleCard;

@@ -84,19 +84,16 @@ function DesignBlocks() {
                   search: objectToQueryString(property)
                 }}
               >
-                {property.images.map((image, imageIndex) => (
-                  // <ExampleCard key={`${property.id}-${imageIndex}`} image={image} description={property.description} name={`${property.propertyType} ${index+1}`} count={property.count} pro={property.pro} />
-                  <ExampleCard 
-                    key={`${property.id}-${imageIndex}`} 
-                    image={image} 
-                    description={property.description} 
-                    name={`${property.propertyType} ${index+1}`} 
-                    count={property.count} 
-                    pro={property.pro} 
-                    bedrooms={property.bedrooms}
-                    bathrooms={property.bathrooms}
-                  />
-                ))}
+                <ExampleCard 
+                  images={property.images}
+                  description={property.description}
+                  name={`${property.propertyType} ${index + 1}`}
+                  count={property.count}
+                  pro={property.pro}
+                  bedrooms={property.bedrooms}
+                  bathrooms={property.bathrooms}
+                  link={property.pro ? '/' : '/sections/page-sections/page-headers'}
+                />
               </Link>
             </Grid>
           ))}

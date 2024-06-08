@@ -17,8 +17,6 @@ import PropTypes from "prop-types";
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import Icon from "@mui/material/Icon";
 import Stack from "@mui/material/Stack";
 
 // Material Kit 2 React components
@@ -26,136 +24,48 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
 
-// Images
-// import bgImage from "assets/images/bg-coworking.jpeg";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import the carousel styles
 
 function HeaderOne({ bedrooms, images, propertyType, listingType, description, stories, bathrooms, sizeInterior, basementType, price }) {
   return (
     <MKBox component="header" position="relative" height="100%">
-      { false && <MKBox component="nav" position="absolute" top="0.5rem" width="100%">
-        <Container>
-          <Grid container flexDirection="row" alignItems="center">
-            <MKTypography
-              component={Link}
-              href="#"
-              variant="button"
-              color="white"
-              fontWeight="regular"
-              py={0.8125}
-              mr={2}
-            >
-              Material Design 2
-            </MKTypography>
-            <MKButton
-              variant="outlined"
-              color="white"
-              sx={{ display: { xs: "block", lg: "none" }, ml: "auto" }}
-            >
-              <MKBox component="i" color="white" className="fas fa-bars" />
-            </MKButton>
-            <MKBox
-              component="ul"
-              display={{ xs: "none", lg: "flex" }}
-              p={0}
-              my={0}
-              mx="auto"
-              sx={{ listStyle: "none" }}
-            >
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  color="white"
-                  fontWeight="regular"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Home
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  color="white"
-                  fontWeight="regular"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  About Us
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  color="white"
-                  fontWeight="regular"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Contact Us
-                </MKTypography>
-              </MKBox>
-            </MKBox>
-            <MKBox
-              component="ul"
-              display={{ xs: "none", lg: "flex" }}
-              p={0}
-              m={0}
-              sx={{ listStyle: "none" }}
-            >
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox component="i" color="white" className="fab fa-twitter" />
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox component="i" color="white" className="fab fa-facebook" />
-                </MKTypography>
-              </MKBox>
-              <MKBox component="li">
-                <MKTypography
-                  component={Link}
-                  href="#"
-                  variant="button"
-                  p={1}
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <MKBox component="i" color="white" className="fab fa-instagram" />
-                </MKTypography>
-              </MKBox>
-            </MKBox>
-          </Grid>
-        </Container>
-      </MKBox> }
+      <MKBox
+        position="absolute"
+        top={0}
+        left={0}
+        width="100%"
+        height="100%"
+        zIndex={1}
+      >
+        <Carousel showThumbs={false} infiniteLoop autoPlay showStatus={false} showIndicators={false}>
+          {images.map((image, index) => (
+            <div key={index}>
+              <MKBox
+                component="img"
+                src={image}
+                alt={`Property Image ${index + 1}`}
+                width="100%"
+                height="100%"
+                sx={{ objectFit: "contain" }}
+              />
+            </div>
+          ))}
+        </Carousel>
+      </MKBox>
       <MKBox
         display="flex"
         alignItems="end"
         minHeight="100%"
+        position="relative"
+        zIndex={2}
         sx={{
           backgroundImage: ({ palette: { gradients }, functions: { linearGradient, rgba } }) =>
             `${linearGradient(
-              rgba(gradients.dark.main, 0.2),
-              rgba(gradients.dark.state, 0.2)
-            )}, url(${images})`,
-          backgroundSize: "contain",
+              rgba(gradients.dark.main, 0.5),
+              rgba(gradients.dark.state, 0.5)
+            )}`,
+          backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
@@ -178,7 +88,7 @@ function HeaderOne({ bedrooms, images, propertyType, listingType, description, s
               Mono, ON, L9W 6W9
             </MKTypography>
             <MKTypography variant="body1" color="white" opacity={1} pr={6} mr={6}>
-            {bedrooms} bed, {bathrooms} bath {propertyType}
+              {bedrooms} bed, {bathrooms} bath {propertyType}
             </MKTypography>
             <Stack direction="row" spacing={2} mt={3}>
               <MKButton color="primary">${price}</MKButton>
@@ -193,10 +103,9 @@ function HeaderOne({ bedrooms, images, propertyType, listingType, description, s
 }
 
 HeaderOne.propTypes = {
-  // breadcrumb: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])).isRequired,
   bedrooms: PropTypes.string.isRequired,
   bathrooms: PropTypes.string.isRequired,
-  images: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.string).isRequired,
   propertyType: PropTypes.string.isRequired,
   listingType: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
@@ -204,7 +113,6 @@ HeaderOne.propTypes = {
   sizeInterior: PropTypes.string.isRequired,
   basementType: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
-  // children: PropTypes.node.isRequired,
 };
 
 export default HeaderOne;

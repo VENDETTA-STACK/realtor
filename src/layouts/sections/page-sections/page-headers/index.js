@@ -35,6 +35,10 @@ function PageHeaders() {
   const location = useLocation();
   const searchData = new URLSearchParams(location.search);
 
+  const images = searchData.get('images') ? searchData.get('images').split(',') : [];
+
+  console.log(images);
+
   return (
     <BaseLayout
       title="Properties"
@@ -46,7 +50,7 @@ function PageHeaders() {
       <View title="26 SKELTON ST" height="40rem">
         <HeaderOne
         bedrooms={searchData.get('bedrooms')}
-        images={searchData.get('images')}
+        images={images}
         propertyType={searchData.get('propertyType')}
         listingType={searchData.get('listingType')}
         description={searchData.get('description')}
