@@ -12,6 +12,8 @@ import "@fontsource/playfair-display";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { storage, firestore } from "../../../Firebase.js";
 import { addDoc, collection } from "firebase/firestore";
+import { Link } from "react-router-dom";
+// import Link from "assets/theme/components/link";
 
 const Admin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -227,7 +229,9 @@ const Admin = () => {
           <Typography color="#fff" variant="h6" sx={{ flexGrow: 1 }}>
             Admin Dashboard
           </Typography>
-          <Button style={{ color: '#fff' }} onClick={handleReviewListings}>Review Listings</Button>
+          <Link to={{ pathname: '/admin/review-listings' }}>
+            <Button style={{ color: '#fff' }}>Review Listings</Button>
+          </Link>
           <Button style={{ color: '#fff' }} onClick={handleSignOut}>Sign Out</Button>
         </Toolbar>
       </AppBar>
