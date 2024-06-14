@@ -1,14 +1,6 @@
 import "../admin.css";
 import React, { useState, useEffect } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
@@ -22,7 +14,9 @@ import {
   AppBar,
   Toolbar,
   Typography,
+  IconButton
 } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { collection, getDocs, deleteDoc, doc, updateDoc, addDoc } from "firebase/firestore";
 import { firestore, storage } from "../../../../Firebase";
 import EditIcon from "@mui/icons-material/Edit";
@@ -200,6 +194,30 @@ const ReviewListings = () => {
 
   const HouseTypes = ["House", "Condo", "Townhouse", "Apartment", "Commercial"];
 
+  const columns = [
+    { field: 'propertyType', headerName: 'Property Type', width: 150 },
+    { field: 'listingType', headerName: 'Listing Type', width: 150 },
+    { field: 'bathrooms', headerName: 'Bathrooms', width: 100 },
+    { field: 'bedrooms', headerName: 'Bedrooms', width: 100 },
+    { field: 'price', headerName: 'Price', width: 150 },
+    { field: 'description', headerName: 'Description', width: 250 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 150,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleEditClick(params.row)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => handleDeleteClick(params.row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      ),
+    },
+  ];
+
   return (
     <div>
       <AppBar position="sticky" sx={{ backgroundColor: "#4a86e5" }}>
@@ -213,41 +231,9 @@ const ReviewListings = () => {
         </Toolbar>
       </AppBar>
       <h2>Review Listings</h2>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Property Type</TableCell>
-              <TableCell>Listing Type</TableCell>
-              <TableCell>Bathrooms</TableCell>
-              <TableCell>Bedrooms</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listings.map((listing) => (
-              <TableRow key={listing.id}>
-                <TableCell style={{width: 100}} >{listing.propertyType}</TableCell>
-                <TableCell>{listing.listingType}</TableCell>
-                <TableCell>{listing.bathrooms}</TableCell>
-                <TableCell>{listing.bedrooms}</TableCell>
-                <TableCell>{listing.price}</TableCell>
-                <TableCell>{listing.description}</TableCell>
-                <TableCell>
-                  <IconButton onClick={() => handleEditClick(listing)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteClick(listing.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid rows={listings} columns={columns} pageSize={5} />
+      </div>
 
       <Dialog open={openEditDialog} onClose={() => setOpenEditDialog(false)}>
         <DialogTitle>Edit Listing</DialogTitle>
@@ -264,83 +250,97 @@ const ReviewListings = () => {
                 ))}
               </Menu>
               <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
-                {editData.listingType || "Select Listing Type"} <Icon>expand_more</Icon>
+                {editData.listingType || "Listing Type"} <Icon>expand_more</Icon>
               </MKButton>
               <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
-                <MenuItem onClick={() => handleListingTypeSelection("For Sale")}>For Sale</MenuItem>
-                <MenuItem onClick={() => handleListingTypeSelection("For Rent")}>For Rent</MenuItem>
+                <MenuItem onClick={() => handleListingTypeSelection("Sale")}>Sale</MenuItem>
+                <MenuItem onClick={() => handleListingTypeSelection("Rent")}>Rent</MenuItem>
               </Menu>
-              <MKButton id="select-image" variant="gradient" color="info" onClick={onSelectImagesClicked} className="equal-width-button">
-                Select Images
-              </MKButton>
             </Grid>
             <TextField
+              margin="dense"
+              name="bathrooms"
               label="Bathrooms"
               type="number"
-              variant="outlined"
-              name="bathrooms"
+              fullWidth
               value={editData.bathrooms}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
+              margin="dense"
+              name="bedrooms"
               label="Bedrooms"
               type="number"
-              variant="outlined"
-              name="bedrooms"
+              fullWidth
               value={editData.bedrooms}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Basement Type"
-              variant="outlined"
+              margin="dense"
               name="basementType"
+              label="Basement Type"
+              type="text"
+              fullWidth
               value={editData.basementType}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
+              margin="dense"
+              name="stories"
               label="Stories"
               type="number"
-              variant="outlined"
-              name="stories"
+              fullWidth
               value={editData.stories}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Size Interior"
-              variant="outlined"
+              margin="dense"
               name="sizeInterior"
+              label="Size Interior"
+              type="number"
+              fullWidth
               value={editData.sizeInterior}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Price"
-              type="number"
-              variant="outlined"
-              name="price"
-              value={editData.price}
-              onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
-            />
-            <TextField
-              label="Description"
-              multiline
-              rows={4}
-              variant="outlined"
+              margin="dense"
               name="description"
+              label="Description"
+              type="text"
+              fullWidth
               value={editData.description}
               onChange={handleEditChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+              margin="dense"
+              name="price"
+              label="Price"
+              type="number"
+              fullWidth
+              value={editData.price}
+              onChange={handleEditChange}
+              InputLabelProps={{ shrink: true }}
             />
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditDialog(false)} color="secondary">Cancel</Button>
-          <Button onClick={handleEditSave} color="primary">Save</Button>
+          <Button onClick={() => setOpenEditDialog(false)}>Cancel</Button>
+          <Button onClick={handleEditSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+        <DialogTitle>Delete Listing</DialogTitle>
+        <DialogContent>Are you sure you want to delete this listing?</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm}>Delete</Button>
         </DialogActions>
       </Dialog>
 
@@ -355,98 +355,95 @@ const ReviewListings = () => {
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeDropdown}>
                 {!addData.propertyType && <MenuItem onClick={closeDropdown}>Select Property Type</MenuItem>}
                 {HouseTypes.map((type, index) => (
-                  <MenuItem key={index} onClick={() => setAddData((prevData) => ({ ...prevData, propertyType: type }))}>
-                    {type}
-                  </MenuItem>
+                  <MenuItem key={index} onClick={() => handleSelect(type)}>{type}</MenuItem>
                 ))}
               </Menu>
               <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
-                {addData.listingType || "Select Listing Type"} <Icon>expand_more</Icon>
+                {addData.listingType || "Listing Type"} <Icon>expand_more</Icon>
               </MKButton>
               <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
-                <MenuItem onClick={() => setAddData((prevData) => ({ ...prevData, listingType: "For Sale" }))}>For Sale</MenuItem>
-                <MenuItem onClick={() => setAddData((prevData) => ({ ...prevData, listingType: "For Rent" }))}>For Rent</MenuItem>
+                <MenuItem onClick={() => handleListingTypeSelection("Sale")}>Sale</MenuItem>
+                <MenuItem onClick={() => handleListingTypeSelection("Rent")}>Rent</MenuItem>
               </Menu>
-              <MKButton id="select-image" variant="gradient" color="info" onClick={onSelectImagesClicked} className="equal-width-button">
-                Select Images
-              </MKButton>
             </Grid>
             <TextField
+              margin="dense"
+              name="bathrooms"
               label="Bathrooms"
               type="number"
-              variant="outlined"
-              name="bathrooms"
+              fullWidth
               value={addData.bathrooms}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
+              margin="dense"
+              name="bedrooms"
               label="Bedrooms"
               type="number"
-              variant="outlined"
-              name="bedrooms"
+              fullWidth
               value={addData.bedrooms}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Basement Type"
-              variant="outlined"
+              margin="dense"
               name="basementType"
+              label="Basement Type"
+              type="text"
+              fullWidth
               value={addData.basementType}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
+              margin="dense"
+              name="stories"
               label="Stories"
               type="number"
-              variant="outlined"
-              name="stories"
+              fullWidth
               value={addData.stories}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Size Interior"
-              variant="outlined"
+              margin="dense"
               name="sizeInterior"
+              label="Size Interior"
+              type="number"
+              fullWidth
               value={addData.sizeInterior}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
             <TextField
-              label="Price"
-              type="number"
-              variant="outlined"
-              name="price"
-              value={addData.price}
-              onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
-            />
-            <TextField
-              label="Description"
-              multiline
-              rows={4}
-              variant="outlined"
+              margin="dense"
               name="description"
+              label="Description"
+              type="text"
+              fullWidth
               value={addData.description}
               onChange={handleAddChange}
-              sx={{ width: '80%', marginBottom: '16px' }}
+              InputLabelProps={{ shrink: true }}
             />
+            <TextField
+              margin="dense"
+              name="price"
+              label="Price"
+              type="number"
+              fullWidth
+              value={addData.price}
+              onChange={handleAddChange}
+              InputLabelProps={{ shrink: true }}
+            />
+            <MKButton variant="gradient" color="info" onClick={onSelectImagesClicked} id="select-image">
+              Select Images (up to 10)
+            </MKButton>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenAddDialog(false)} color="secondary">Cancel</Button>
-          <Button onClick={handleAddSave} color="primary">Save</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>Are you sure you want to delete this listing?</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)} color="secondary">Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="primary">Delete</Button>
+          <Button onClick={() => setOpenAddDialog(false)}>Cancel</Button>
+          <Button onClick={handleAddSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
