@@ -14,8 +14,10 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
+import { useRef } from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
+import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 
 // Material Kit 2 React components
@@ -36,14 +38,11 @@ import DesignBlocks from "pages/Presentation/sections/DesignBlocks";
 // import Pages from "pages/Presentation/sections/Pages";
 import Testimonials from "pages/Presentation/sections/Testimonials";
 import Download from "pages/Presentation/sections/Download";
-import RealtorImage from '../../assets/images/realtor3.JPEG'
-
 // Presentation page components
 // import BuiltByDevelopers from "pages/Presentation/components/BuiltByDevelopers";
 
-// Routes
-import routes from "routes";
 import footerRoutes from "footer.routes";
+import MKButton from "components/MKButton";
 
 // console.log(await fetchPosts())
 
@@ -54,6 +53,15 @@ import footerRoutes from "footer.routes";
 // import bgImage from "assets/images/bg-presentation.jpg";
 
 function Presentation() {
+
+  // Create a reference for the DesignBlocks component
+  const designBlocksRef = useRef(null);
+
+  // Function to scroll to the DesignBlocks component
+  const scrollToDesignBlocks = () => {
+    designBlocksRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       <DrawerAppBar
@@ -108,7 +116,20 @@ function Presentation() {
           boxShadow: ({ boxShadows: { xxl } }) => xxl,
         }}
       >
+
+        <Grid container>
+          <Grid item xs={12} style={{textAlign: "center"}}>
+            <Box m={1} display="inline">
+              <MKButton color="info" onClick={scrollToDesignBlocks}>Buy</MKButton>
+            </Box>
+            <Box m={1} display="inline">
+              <MKButton color="info">Sell</MKButton>
+            </Box>  
+          </Grid>
+        </Grid>
+
         <Counters />
+        
         { false && <Information /> }
         <DesignBlocks style={{ marginTop: '-100px' }} />
         {/* <Pages />
