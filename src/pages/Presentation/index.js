@@ -120,7 +120,7 @@ function Presentation() {
         <Grid container>
           <Grid item xs={12} style={{textAlign: "center"}}>
             <Box m={1} display="inline">
-              <MKButton color="info" onClick={scrollToDesignBlocks}>Buy</MKButton>
+              <MKButton color="info" onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}>Buy</MKButton>
             </Box>
             <Box m={1} display="inline">
               <MKButton color="info">Sell</MKButton>
