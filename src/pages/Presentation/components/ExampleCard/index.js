@@ -1,5 +1,5 @@
 // ExampleCard.js
-
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -8,8 +8,18 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import BedIcon from "@mui/icons-material/Bed";
 import BathtubIcon from "@mui/icons-material/Bathtub";
+import './examplecard.css';
 
 function ExampleCard({ images, name, description, count, pro, bedrooms, bathrooms, link, ...rest }) {
+
+  const [isOverflow, setIsOverflow] = useState(false);
+  const descriptionRef = useRef(null);
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      setIsOverflow(descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight);
+    }
+  }, [description]);
 
   const imageTemplate = (
     <MKBox
@@ -88,7 +98,12 @@ function ExampleCard({ images, name, description, count, pro, bedrooms, bathroom
           </MKTypography>
         )}
         {description && (
-          <MKTypography variant="subtitle2" fontWeight="regular">
+          <MKTypography
+            ref={descriptionRef}
+            className="truncate"
+            variant="subtitle2"
+            fontWeight="regular"
+          >
             {description}
           </MKTypography>
         )}

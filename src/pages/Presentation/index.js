@@ -19,6 +19,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
+import { useNavigate } from "react-router-dom";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -60,6 +61,12 @@ function Presentation() {
   // Function to scroll to the DesignBlocks component
   const scrollToDesignBlocks = () => {
     designBlocksRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const redirectToAdmin = () => {
+    navigate('/admin'); // Navigate to the specified link
   };
 
   return (
@@ -123,7 +130,7 @@ function Presentation() {
               <MKButton color="info" onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}>Buy</MKButton>
             </Box>
             <Box m={1} display="inline">
-              <MKButton color="info">Sell</MKButton>
+              <MKButton color="info" onClick={ () => redirectToAdmin() } >Sell</MKButton>
             </Box>  
           </Grid>
         </Grid>
