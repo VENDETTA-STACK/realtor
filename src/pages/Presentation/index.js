@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
@@ -44,6 +44,7 @@ import Download from "pages/Presentation/sections/Download";
 
 import footerRoutes from "footer.routes";
 import MKButton from "components/MKButton";
+import CollectUserInformationModal from "./sections/CollectUserInformationModal";
 
 // console.log(await fetchPosts())
 
@@ -57,16 +58,18 @@ function Presentation() {
 
   // Create a reference for the DesignBlocks component
   const designBlocksRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Function to scroll to the DesignBlocks component
   const scrollToDesignBlocks = () => {
     designBlocksRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
   const redirectToAdmin = () => {
-    navigate('/admin'); // Navigate to the specified link
+    // navigate('/admin'); 
+    setModalOpen(true);
   };
 
   return (
@@ -246,6 +249,7 @@ function Presentation() {
       <MKBox pt={6} px={1} mt={6}>
         <DefaultFooter content={footerRoutes} />
       </MKBox>
+      <CollectUserInformationModal open={modalOpen} handleClose={() => setModalOpen(false)} />
     </>
   );
 }
