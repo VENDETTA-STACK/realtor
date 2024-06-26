@@ -6,6 +6,7 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,6 +64,16 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
             onChange={(e) => setContact(e.target.value)}
             required
             margin="normal"
+          />
+          <TextField
+            label="Description"
+            id="outlined-multiline-static"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            multiline
+            fullWidth
+            rows={4}
+            required
           />
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
             Submit
