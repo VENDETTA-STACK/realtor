@@ -48,8 +48,6 @@ import CustomizeAboutUs from "pages/LandingPages/AboutUs/CustomizeAboutUs";
 import ContactUs from "layouts/pages/landing-pages/contact-us";
 import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
-import Admin from "layouts/pages/authentication/admin";
-import ReviewListings from "layouts/pages/authentication/admin/review-listing";
 
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -103,19 +101,9 @@ const routes = [
         collapse: [
           {
             name: "sign in",
-            route: "/sign-in",
+            route: "/pages/authentication/sign-in",
             component: <SignIn />,
           },
-          {
-            name: "admin",
-            route: "/admin",
-            component: <Admin />,
-          },
-          {
-            name: "Review Listings",
-            route: "/admin/review-listings",
-            component: <ReviewListings />,
-          }
         ],
       },
     ],
