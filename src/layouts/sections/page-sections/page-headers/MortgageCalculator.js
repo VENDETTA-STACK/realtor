@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Grid } from '@mui/material';
-import MKButton from 'components/MKButton';
+import { Box, TextField, Button, Typography } from '@mui/material';
 
 function MortgageCalculator() {
   const [mortgageAmount, setMortgageAmount] = useState('');
@@ -24,76 +23,43 @@ function MortgageCalculator() {
   };
 
   return (
-    <Box sx={{ mt: 4, p: 3, border: '1px solid #ccc', borderRadius: 2, maxWidth: 600, mx: 'auto' }}>
+    <Box sx={{ mt: 4, p: 3, border: '1px solid #ccc', borderRadius: 2 }}>
       <Typography variant="h5" gutterBottom>Mortgage Calculator</Typography>
       <Box component="form" noValidate autoComplete="off">
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              label="Mortgage Amount"
-              value={mortgageAmount}
-              onChange={(e) => setMortgageAmount(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Amortization (years)"
-              value={amortizationPeriod}
-              onChange={(e) => setAmortizationPeriod(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Interest Rate (%)"
-              value={interestRate}
-              onChange={(e) => setInterestRate(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <MKButton
-              variant="gradient"
-              color="success"
-              onClick={calculateMonthlyPayment}
-              fullWidth
-              sx={{ mt: 2 }}
-            >
-              Calculate
-            </MKButton>
-          </Grid>
-          <Grid item xs={6}>
-            <MKButton
-              variant="gradient"
-              color="error"
-              onClick={() => {
-                setMortgageAmount('');
-                setInterestRate('');
-                setAmortizationPeriod('');
-                setMonthlyPayment(null);
-              }}
-              fullWidth
-              sx={{ mt: 2 }}
-            >
-              Reset
-            </MKButton>
-          </Grid>
-        </Grid>
+        <TextField
+          label="Mortgage Amount"
+          value={mortgageAmount}
+          onChange={(e) => setMortgageAmount(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Interest Rate (%)"
+          value={interestRate}
+          onChange={(e) => setInterestRate(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Amortization Period (years)"
+          value={amortizationPeriod}
+          onChange={(e) => setAmortizationPeriod(e.target.value)}
+          fullWidth
+          margin="normal"
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={calculateMonthlyPayment}
+          sx={{ mt: 2 }}
+        >
+          Calculate
+        </Button>
       </Box>
       {monthlyPayment && (
-        <div>
         <Typography variant="h6" sx={{ mt: 2 }}>
           Monthly Mortgage Payment: ${monthlyPayment}
         </Typography>
-     
-        <h6>
-          This calculator is for demonstration purposes only. Always consult with a financial advisor before making any financial decisions.
-        </h6>
-        </div>
       )}
     </Box>
   );
