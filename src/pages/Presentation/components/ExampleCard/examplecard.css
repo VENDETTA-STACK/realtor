@@ -1,7 +1,13 @@
 .truncate {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Number of lines to show */
+    -webkit-line-clamp: 1; /* Number of lines to show */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .carousel-image {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
   }

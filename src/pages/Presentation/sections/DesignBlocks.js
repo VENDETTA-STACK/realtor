@@ -107,7 +107,7 @@ function DesignBlocks() {
     <MKBox component="section" mt={-10} mb={6} py={6}>
       <Container>
         <Grid container item xs={12} lg={6} flexDirection="column" alignItems="center" sx={{ textAlign: "center", my: 6, mx: "auto", px: 0.75 }}>
-          <MKBadge variant="contained" color="info" badgeContent="Infinite combinations" container sx={{ mb: 2 }} />
+          {/* <MKBadge variant="contained" color="info" badgeContent="Infinite combinations" container sx={{ mb: 2 }} /> */}
           <MKTypography variant="h2" fontWeight="bold">
             Huge collection of Properties
           </MKTypography>

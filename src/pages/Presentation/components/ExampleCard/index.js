@@ -1,4 +1,3 @@
-// ExampleCard.js
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Carousel } from "react-responsive-carousel";
@@ -66,19 +65,19 @@ function ExampleCard({ images, name, description, count, pro, bedrooms, bathroom
           </svg>
         </MKBox>
       )}
-      <Carousel showThumbs={false} infiniteLoop autoPlay>
+      {/* <Carousel showArrows={false} showThumbs={false} infiniteLoop autoPlay dynamicHeight={false} style={{height: '100%'}}> */}
         {images.map((image, index) => (
-          <MKBox
-            key={index}
-            component="img"
-            src={image}
-            alt={`${name} ${index + 1}`}
-            width="100%"
-            my="auto"
-            opacity={pro ? 0.6 : 1}
-          />
+            <img
+              src={image}
+              alt={`${name} ${index + 1}`}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
         ))}
-      </Carousel>
+      {/* </Carousel> */}
     </MKBox>
   );
 

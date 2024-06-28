@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
-// import axios from 'axios';
+import MKButton from 'components/MKButton';
+import MKBox from 'components/MKBox';
 
 const CollectUserInformationModal = ({ open, handleClose }) => {
   const [name, setName] = useState('');
@@ -13,9 +14,9 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
 
     // Send the collected data to the server to send an email
     try {
-    //   await axios.post('/api/send-email', { name, email, contact });
-    //   alert('Email sent successfully');
-    //   handleClose();
+      //   await axios.post('/api/send-email', { name, email, contact });
+      //   alert('Email sent successfully');
+      //   handleClose();
     } catch (error) {
       console.error('Error sending email:', error);
       alert('Failed to send email');
@@ -24,13 +25,14 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box
+      <MKBox
         sx={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 400,
+          width: '90%', // Adjusted for smaller screens
+          maxWidth: 400, // Maximum width for larger screens
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,
@@ -48,6 +50,7 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
             onChange={(e) => setName(e.target.value)}
             required
             margin="normal"
+            sx={{ mb: 2 }} // Adjust spacing between fields
           />
           <TextField
             label="Email"
@@ -56,6 +59,7 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
             onChange={(e) => setEmail(e.target.value)}
             required
             margin="normal"
+            sx={{ mb: 2 }} // Adjust spacing between fields
           />
           <TextField
             label="Contact"
@@ -64,6 +68,7 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
             onChange={(e) => setContact(e.target.value)}
             required
             margin="normal"
+            sx={{ mb: 2 }} // Adjust spacing between fields
           />
           <TextField
             label="Description"
@@ -74,12 +79,13 @@ const CollectUserInformationModal = ({ open, handleClose }) => {
             fullWidth
             rows={4}
             required
+            sx={{ mb: 2 }} // Adjust spacing between fields
           />
-          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          <MKButton type="submit" variant="contained" color="info" sx={{ mt: 2 }}>
             Submit
-          </Button>
+          </MKButton>
         </form>
-      </Box>
+      </MKBox>
     </Modal>
   );
 };

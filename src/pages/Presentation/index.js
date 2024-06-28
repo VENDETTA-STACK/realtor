@@ -72,6 +72,13 @@ function Presentation() {
     setModalOpen(true);
   };
 
+  const scrollToProperties = () => {
+    const element = document.querySelector('.properties');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <DrawerAppBar
@@ -130,7 +137,7 @@ function Presentation() {
         <Grid container>
           <Grid item xs={12} style={{textAlign: "center"}}>
             <Box m={1} display="inline">
-              <MKButton color="info" onClick={() => window.scrollTo({ top: 1100, behavior: "smooth" })}>Buy</MKButton>
+              <MKButton color="info" onClick={() => { window.location.hash = "#properties"; }}>Buy</MKButton>
             </Box>
             <Box m={1} display="inline">
               <MKButton color="info" onClick={ () => redirectToAdmin() } >Sell</MKButton>
@@ -138,10 +145,13 @@ function Presentation() {
           </Grid>
         </Grid>
 
-        <Counters />
+        {/* <Counters /> */}
         
-        { false && <Information /> }
-        <DesignBlocks style={{ marginTop: '-100px' }} />
+        {/* { false && <Information /> } */}
+        
+        <div id="properties">
+        <DesignBlocks  style={{ marginTop: '-100px' }} />
+        </div>
         {/* <Pages />
         <Container sx={{ mt: 6 }}>
           <BuiltByDevelopers />
