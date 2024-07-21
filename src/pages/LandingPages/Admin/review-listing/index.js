@@ -17,12 +17,12 @@ import {
   IconButton
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { collection, getDocs, deleteDoc, doc, updateDoc, addDoc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, addDoc, getDoc } from "firebase/firestore";
 import { firestore, storage } from "../../../../Firebase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MKButton from "components/MKButton";
-import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { uploadBytes, getDownloadURL, ref, deleteObject } from "firebase/storage";
 
 const ReviewListings = () => {
   const [listings, setListings] = useState([]);
@@ -70,7 +70,19 @@ const ReviewListings = () => {
   };
 
   const handleDeleteConfirm = async () => {
-    await deleteDoc(doc(firestore, "properties", deleteId));
+    const listingRef = doc(firestore, "properties", deleteId);
+    const listingSnapshot = await getDoc(listingRef);
+    const listingData = listingSnapshot.data();
+
+    if (listingData.images) {
+      const deletePromises = listingData.images.map((imageURL) => {
+        const imageRef = ref(storage, imageURL);
+        return deleteObject(imageRef);
+      });
+      await Promise.all(deletePromises);
+    }
+
+    await deleteDoc(listingRef);
     setListings((prevListings) => prevListings.filter((listing) => listing.id !== deleteId));
     setOpenDeleteDialog(false);
   };
@@ -111,8 +123,8 @@ const ReviewListings = () => {
     const fileUrls = await Promise.all(selectedFiles.map(uploadFile));
     const newListingData = { ...addData, images: fileUrls, timestamp: new Date().getTime() };
 
-    await addDoc(collection(firestore, "properties"), newListingData);
-    setListings((prevListings) => [...prevListings, { id: newListingData.timestamp, ...newListingData }]);
+    const newDocRef = await addDoc(collection(firestore, "properties"), newListingData);
+    setListings((prevListings) => [...prevListings, { id: newDocRef.id, ...newListingData }]);
     setOpenAddDialog(false);
     setAddData({
       propertyType: "",
@@ -246,17 +258,22 @@ const ReviewListings = () => {
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeDropdown}>
                 {!editData.propertyType && <MenuItem onClick={closeDropdown}>Select Property Type</MenuItem>}
                 {HouseTypes.map((type, index) => (
-                  <MenuItem key={index} onClick={() => handleSelect(type)}>{type}</MenuItem>
+                  <MenuItem key={index} onClick={() => handleSelect(type)}>
+                    {type}
+                  </MenuItem>
                 ))}
               </Menu>
-              <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
-                {editData.listingType || "Listing Type"} <Icon>expand_more</Icon>
-              </MKButton>
-              <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
-                <MenuItem onClick={() => handleListingTypeSelection("Sale")}>Sale</MenuItem>
-                <MenuItem onClick={() => handleListingTypeSelection("Rent")}>Rent</MenuItem>
-              </Menu>
             </Grid>
+            <TextField
+              margin="dense"
+              name="listingType"
+              label="Listing Type"
+              type="text"
+              fullWidth
+              value={editData.listingType}
+              onChange={handleEditChange}
+              required
+            />
             <TextField
               margin="dense"
               name="bathrooms"
@@ -265,7 +282,7 @@ const ReviewListings = () => {
               fullWidth
               value={editData.bathrooms}
               onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
+              required
             />
             <TextField
               margin="dense"
@@ -275,47 +292,7 @@ const ReviewListings = () => {
               fullWidth
               value={editData.bedrooms}
               onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="basementType"
-              label="Basement Type"
-              type="text"
-              fullWidth
-              value={editData.basementType}
-              onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="stories"
-              label="Stories"
-              type="number"
-              fullWidth
-              value={editData.stories}
-              onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="sizeInterior"
-              label="Size Interior"
-              type="number"
-              fullWidth
-              value={editData.sizeInterior}
-              onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="description"
-              label="Description"
-              type="text"
-              fullWidth
-              value={editData.description}
-              onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
+              required
             />
             <TextField
               margin="dense"
@@ -325,7 +302,17 @@ const ReviewListings = () => {
               fullWidth
               value={editData.price}
               onChange={handleEditChange}
-              InputLabelProps={{ shrink: true }}
+              required
+            />
+            <TextField
+              margin="dense"
+              name="description"
+              label="Description"
+              type="text"
+              fullWidth
+              value={editData.description}
+              onChange={handleEditChange}
+              required
             />
           </div>
         </DialogContent>
@@ -336,8 +323,10 @@ const ReviewListings = () => {
       </Dialog>
 
       <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>Delete Listing</DialogTitle>
-        <DialogContent>Are you sure you want to delete this listing?</DialogContent>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this listing?</Typography>
+        </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
           <Button onClick={handleDeleteConfirm}>Delete</Button>
@@ -355,17 +344,22 @@ const ReviewListings = () => {
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeDropdown}>
                 {!addData.propertyType && <MenuItem onClick={closeDropdown}>Select Property Type</MenuItem>}
                 {HouseTypes.map((type, index) => (
-                  <MenuItem key={index} onClick={() => handleSelect(type)}>{type}</MenuItem>
+                  <MenuItem key={index} onClick={() => handleSelect(type)}>
+                    {type}
+                  </MenuItem>
                 ))}
               </Menu>
-              <MKButton variant="gradient" color="info" onClick={openListingTypeDropdown} className="equal-width-button">
-                {addData.listingType || "Listing Type"} <Icon>expand_more</Icon>
-              </MKButton>
-              <Menu anchorEl={listingTypeDropdown} open={Boolean(listingTypeDropdown)} onClose={closeListingTypeDropdown}>
-                <MenuItem onClick={() => handleListingTypeSelection("Sale")}>Sale</MenuItem>
-                <MenuItem onClick={() => handleListingTypeSelection("Rent")}>Rent</MenuItem>
-              </Menu>
             </Grid>
+            <TextField
+              margin="dense"
+              name="listingType"
+              label="Listing Type"
+              type="text"
+              fullWidth
+              value={addData.listingType}
+              onChange={handleAddChange}
+              required
+            />
             <TextField
               margin="dense"
               name="bathrooms"
@@ -374,7 +368,7 @@ const ReviewListings = () => {
               fullWidth
               value={addData.bathrooms}
               onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
+              required
             />
             <TextField
               margin="dense"
@@ -384,47 +378,7 @@ const ReviewListings = () => {
               fullWidth
               value={addData.bedrooms}
               onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="basementType"
-              label="Basement Type"
-              type="text"
-              fullWidth
-              value={addData.basementType}
-              onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="stories"
-              label="Stories"
-              type="number"
-              fullWidth
-              value={addData.stories}
-              onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="sizeInterior"
-              label="Size Interior"
-              type="number"
-              fullWidth
-              value={addData.sizeInterior}
-              onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              margin="dense"
-              name="description"
-              label="Description"
-              type="text"
-              fullWidth
-              value={addData.description}
-              onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
+              required
             />
             <TextField
               margin="dense"
@@ -434,10 +388,26 @@ const ReviewListings = () => {
               fullWidth
               value={addData.price}
               onChange={handleAddChange}
-              InputLabelProps={{ shrink: true }}
+              required
             />
-            <MKButton variant="gradient" color="info" onClick={onSelectImagesClicked} id="select-image">
-              Select Images (up to 10)
+            <TextField
+              margin="dense"
+              name="description"
+              label="Description"
+              type="text"
+              fullWidth
+              value={addData.description}
+              onChange={handleAddChange}
+              required
+            />
+            <MKButton
+              variant="gradient"
+              color="info"
+              onClick={onSelectImagesClicked}
+              id="select-image"
+              className="equal-width-button"
+            >
+              Select Images
             </MKButton>
           </div>
         </DialogContent>

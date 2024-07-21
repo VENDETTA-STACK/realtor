@@ -13,7 +13,6 @@ import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { storage, firestore } from "../../../Firebase.js";
 import { addDoc, collection } from "firebase/firestore";
 import { Link } from "react-router-dom";
-// import Link from "assets/theme/components/link";
 
 const Admin = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -98,8 +97,11 @@ const Admin = () => {
         return;
       }
 
-      const fileUrls = await Promise.all(selectedFiles.map(uploadFile));
+      const fileDetails = await Promise.all(selectedFiles.map(uploadFile));
+      const fileUrls = fileDetails.map((file) => file.url);
+      const fileNames = fileDetails.map((file) => file.name);
       console.log("File URLs:", fileUrls);
+      console.log("File Names:", fileNames);
 
       if (!propertyType || !listingType || !selectedFiles.length || !price || !description || !bedrooms || !basementType || !stories || !sizeInterior || !bathrooms) {
         alert("Please fill in all required fields.");
@@ -116,10 +118,11 @@ const Admin = () => {
         description: description,
         price: price,
         timestamp: new Date().getTime(),
-        images: fileUrls
+        images: fileUrls,
+        imageNames: fileNames,
       };
 
-      await addDoc(collection(firestore, "properties"), propertyData)
+      await addDoc(collection(firestore, "properties"), propertyData);
       console.log("Property data saved successfully");
       alert("Property data saved successfully");
       setPropertyType("");
@@ -147,11 +150,11 @@ const Admin = () => {
       const storageRef = ref(storage, `images/${filename}`);
       uploadBytes(storageRef, file).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((downloadURL) => {
-          resolve(downloadURL);
+          resolve({ name: filename, url: downloadURL });
           console.log('File available at', downloadURL);
-        });
+        }).catch(reject);
         console.log('Uploaded a blob or file!');
-      });
+      }).catch(reject);
     });
   };
 
@@ -162,7 +165,6 @@ const Admin = () => {
   const handleBathroomsChange = (e) => {
     const value = e.target.value;
     if (value === "" || value <= 0) {
-      // setBathrooms(value);
       alert("Please enter a valid number");
     } else {
       setBathrooms(value);
@@ -172,7 +174,6 @@ const Admin = () => {
   const handleBedroomsChange = (e) => {
     const value = e.target.value;
     if (value === "" || value <= 0) {
-      // setBedrooms(value);
       alert("Please enter a valid number");
     } else {
       setBedrooms(value);
@@ -186,7 +187,6 @@ const Admin = () => {
   const handleStoriesChange = (e) => {
     const value = e.target.value;
     if (value === "" || value <= 0) {
-      // setStories(value);
       alert("Please enter a valid number");
     } else {
       setStories(value);
@@ -200,7 +200,6 @@ const Admin = () => {
   const handlePriceChange = (e) => {
     const value = e.target.value;
     if (value === "" || value <= 0) {
-      // setPrice(value);
       alert("Please enter a valid number");
     } else {
       setPrice(value);
@@ -210,7 +209,6 @@ const Admin = () => {
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-  
 
   const handleSignOut = () => {
     // Add your sign out logic here
