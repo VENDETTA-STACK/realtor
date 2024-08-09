@@ -36,16 +36,16 @@ function CustomizeAboutUs() {
         </Box>
         <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h2" gutterBottom>
-            Our Mission
+            Meet Chintan Patel
           </Typography>
           <Typography variant="body1" paragraph>
-            Our mission is to provide exceptional real estate services to our clients by 
-            offering personalized and professional guidance throughout the home buying and 
-            selling process. We strive to build long-lasting relationships based on trust, 
-            integrity, and customer satisfaction.
+          Purchasing a house or buying an investment property for the future is a very important decision that can have huge financial impact on your life.  The biggest investment you will probably make in your life will most probably be a real estate investment. This is where you will need a professional realtor who can help you navigate with whole process of either buying or selling your home.
+          Meet, your Realtor Chintan Patel
+          Chintan Patel pursued Bachelor of Business Administration from York University and has worked for major corporations such as TD Canada Trust and Investors Group. Now pursing career in real estate, Chintan brings excellent customer service and negotiating skills for his clients. Chintan not only specializes in residential properties but is very experienced on the commercial side, especially in fast food industry. Owning few fast-food restaurants across GTA, Chintan has ample of experience is buying, selling or leasing commercial properties.
+          With the experience of his brokerage and team of over 300 realtors, Chintan will ensure that his clients will get the best deal that suits their needs, whether it is buying their dream home or dream of owing their own business.  
           </Typography>
         </Box>
-        <Box sx={{ my: 4 }}>
+        {/* <Box sx={{ my: 4 }}>
           <Typography variant="h4" component="h2" gutterBottom>
             Meet Our Team
           </Typography>
@@ -71,7 +71,7 @@ function CustomizeAboutUs() {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   );
