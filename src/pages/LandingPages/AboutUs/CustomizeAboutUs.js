@@ -25,7 +25,7 @@ function CustomizeAboutUs() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <DrawerAppBar />
-      <Container sx={{ flex: 1 }}>
+      <Container sx={{ flex: 1, mt: 4 }}>
         <Box sx={{ my: 4 }}>
           <Typography variant="h3" component="h1" gutterBottom align="center">
             About Us

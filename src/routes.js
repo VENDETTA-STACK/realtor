@@ -50,6 +50,7 @@ import Author from "layouts/pages/landing-pages/author";
 import SignIn from "layouts/pages/authentication/sign-in";
 import Admin from "layouts/pages/authentication/admin";
 import ReviewListings from "layouts/pages/authentication/admin/review-listing";
+import ContactUsCustomized from "pages/LandingPages/ContactUs/ContactUsCustomized";
 
 // Sections
 import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -90,6 +91,11 @@ const routes = [
             name: "contact us",
             route: "/pages/landing-pages/contact-us",
             component: <ContactUs />,
+          },
+          {
+            name: "contact us",
+            route: "/contact-us",
+            component: <ContactUsCustomized />,
           },
           {
             name: "author",
