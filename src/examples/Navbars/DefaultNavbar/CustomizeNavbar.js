@@ -20,7 +20,7 @@ const drawerWidth = 240;
 const navItems = [
   { text: 'Home', path: '/' },
   { text: 'About', path: '/about' },
-  { text: 'Contact', path: '/contact' },
+  { text: 'Contact', path: '/contact-us' },
 ];
 
 function DrawerAppBar(props) {

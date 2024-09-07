@@ -222,7 +222,7 @@ function Presentation() {
                 mr={{ xs: 0, lg: "auto" }}
                 sx={{ textAlign: { xs: "center", lg: "right" } }}
               >
-                <MKSocialButton
+                {/* <MKSocialButton
                   component="a"
                   href="https://twitter.com/intent/tweet?text=Check%20Material%20Design%20System%20made%20by%20%40CreativeTim%20%23webdesign%20%23designsystem%20%23mui5&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fmaterial-kit-react"
                   target="_blank"
@@ -231,7 +231,7 @@ function Presentation() {
                 >
                   <i className="fab fa-twitter" />
                   &nbsp;Tweet
-                </MKSocialButton>
+                </MKSocialButton> */}
                 <MKSocialButton
                   component="a"
                   href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-kit-react"
@@ -244,12 +244,12 @@ function Presentation() {
                 </MKSocialButton>
                 <MKSocialButton
                   component="a"
-                  href="https://www.pinterest.com/pin/create/button/?url=https://www.creative-tim.com/product/material-kit-react"
+                  href="https://instagram.com/"
                   target="_blank"
-                  color="pinterest"
+                  color="instagram"
                 >
-                  <i className="fab fa-pinterest" />
-                  &nbsp;Pin it
+                  <i className="fab fa-instagram" />
+                  &nbsp;Like It
                 </MKSocialButton>
               </Grid>
             </Grid>

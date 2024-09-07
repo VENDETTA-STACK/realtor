@@ -3,6 +3,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import Instagram from "@mui/icons-material/Instagram";
 
 // Material Kit 2 React components
 import MKTypography from "components/MKTypography";
@@ -23,18 +24,18 @@ export default {
       icon: <FacebookIcon />,
       link: "https://www.facebook.com/CreativeTim/",
     },
+    // {
+    //   icon: <TwitterIcon />,
+    //   link: "https://twitter.com/creativetim",
+    // },
     {
-      icon: <TwitterIcon />,
-      link: "https://twitter.com/creativetim",
+      icon: <Instagram />,
+      link: "https://instagram.com/",
     },
-    {
-      icon: <GitHubIcon />,
-      link: "https://github.com/creativetimofficial",
-    },
-    {
-      icon: <YouTubeIcon />,
-      link: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
-    },
+    // {
+    //   icon: <YouTubeIcon />,
+    //   link: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
+    // },
   ],
   menus: [
     {
