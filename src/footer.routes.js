@@ -21,21 +21,9 @@ export default {
   },
   socials: [
     {
-      icon: <FacebookIcon />,
-      link: "https://www.facebook.com/CreativeTim/",
-    },
-    // {
-    //   icon: <TwitterIcon />,
-    //   link: "https://twitter.com/creativetim",
-    // },
-    {
       icon: <Instagram />,
-      link: "https://instagram.com/",
-    },
-    // {
-    //   icon: <YouTubeIcon />,
-    //   link: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
-    // },
+      link: "https://www.instagram.com/realtor_chintan",
+    }
   ],
   menus: [
     {
@@ -75,7 +63,7 @@ export default {
   ],
   copyright: (
     <MKTypography variant="button" fontWeight="regular">
-      All rights reserved. Copyright &copy; {date} Material Kit by{" "}
+      All rights reserved. Copyright &copy; {date} Realtor Chintan Patel
       <MKTypography
         component="a"
         href="https://www.creative-tim.com"
@@ -84,7 +72,6 @@ export default {
         variant="button"
         fontWeight="regular"
       >
-        Creative Tim
       </MKTypography>
       .
     </MKTypography>

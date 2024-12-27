@@ -139,7 +139,11 @@ function DesignBlocks() {
             >
               <MenuItem value="">All</MenuItem>
               <MenuItem value="House">House</MenuItem>
+              <MenuItem value="Condo">Condo</MenuItem>
               <MenuItem value="Apartment">Apartment</MenuItem>
+              <MenuItem value="Townhouse">Townhouse</MenuItem>
+              <MenuItem value="Commercial">Commercial</MenuItem>
+
 
             </TextField>
           </Grid>
